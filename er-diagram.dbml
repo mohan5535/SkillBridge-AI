@@ -1,0 +1,513 @@
+// ============================================================================
+// SkillBridge AI — Universal Career Gap Tracker
+// Entity-Relationship Diagram in DBML (Database Markup Language)
+//
+// Version : 1.0
+// Date    : 2026-10-31
+// Tables  : 22 tables across 5 logical layers
+// ============================================================================
+
+Project SkillBridge_AI {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # SkillBridge AI — Universal Career Gap Tracker
+
+    A normalized (3NF) relational schema that helps people from ANY professional
+    or educational field identify, track, and close gaps between their current
+    profile and their target career.
+
+    **5 Logical Layers:**
+    1. User Profile — identity, education, skills, experience, certifications, breaks
+    2. Career & Requirements Catalog — fields, roles, skills, qualifications, certifications, requirements
+    3. Gap Analysis — analyses, gap items, gap types
+    4. Learning & Improvement — resources, plans, plan items
+    5. Assessments — assessments, results
+  '''
+}
+
+// ============================================================================
+// LAYER 1: USER PROFILE
+// ============================================================================
+
+// Table 1: Core user identity
+Table users {
+  user_id         int          [pk, increment, note: 'Auto-generated primary key']
+  email           varchar(255) [unique, not null, note: 'Each email belongs to exactly one account']
+  full_name       varchar(200) [not null]
+  phone           varchar(20)  [note: 'Optional contact number']
+  country         varchar(100) [note: 'For jurisdiction-aware requirements']
+  state_or_region varchar(100) [note: 'Sub-jurisdiction']
+  date_of_birth   date         [note: 'Only for age-based eligibility (e.g., govt exams). NULL when not needed']
+  created_at      timestamp    [not null, default: `NOW()`]
+  updated_at      timestamp    [not null, default: `NOW()`]
+
+  Note: 'Core user profile. Stores only data the application needs — no biometric or government ID data.'
+}
+
+// Table 7: A user's educational qualifications
+Table education_records {
+  education_id          int          [pk, increment]
+  user_id               int          [not null, note: 'FK → users']
+  qualification_type_id int          [not null, note: 'FK → qualification_types']
+  field_of_study        varchar(200) [note: 'e.g., Computer Science, Nursing']
+  institution_name      varchar(300) [not null]
+  start_date            date
+  end_date              date         [note: 'NULL = still studying']
+  status                varchar(30)  [not null, default: 'completed', note: 'in_progress | completed | incomplete | deferred']
+  grade_or_score        varchar(50)  [note: 'e.g., 3.8 GPA, First Class, 85%']
+  created_at            timestamp    [not null, default: `NOW()`]
+  updated_at            timestamp    [not null, default: `NOW()`]
+
+  Note: 'A user\'s educational qualifications. Linked to qualification_types for normalization.'
+}
+
+// Table 8: Junction Table — users ↔ skills
+Table user_skills {
+  user_skill_id       int          [pk, increment]
+  user_id             int          [not null, note: 'FK → users']
+  skill_id            int          [not null, note: 'FK → skills']
+  proficiency_level   varchar(30)  [not null, default: 'beginner', note: 'beginner | intermediate | advanced | expert']
+  years_of_experience decimal(4,1) [note: 'Must be >= 0']
+  evidence            text         [note: 'e.g., Built 3 React apps, Used in ICU for 2 years']
+  last_used_date      date         [note: 'Skills can become stale']
+  created_at          timestamp    [not null, default: `NOW()`]
+  updated_at          timestamp    [not null, default: `NOW()`]
+
+  indexes {
+    (user_id, skill_id) [unique, name: 'uq_user_skills']
+  }
+
+  Note: 'Junction table linking users to skills with proficiency levels. Many-to-many: users ↔ skills.'
+}
+
+// Table 9: A user's work/volunteer/internship experience
+Table user_experiences {
+  experience_id     int          [pk, increment]
+  user_id           int          [not null, note: 'FK → users']
+  job_title         varchar(200) [not null]
+  organization_name varchar(300) [not null]
+  experience_type   varchar(30)  [not null, default: 'full_time', note: 'full_time | part_time | internship | freelance | volunteer | apprenticeship']
+  field_id          int          [note: 'FK → career_fields (optional)']
+  start_date        date         [not null]
+  end_date          date         [note: 'NULL = current position']
+  description       text
+  created_at        timestamp    [not null, default: `NOW()`]
+  updated_at        timestamp    [not null, default: `NOW()`]
+
+  Note: 'A user\'s work/volunteer/internship history. Optionally linked to a career field.'
+}
+
+// Table 10: Junction Table — users ↔ certifications
+Table user_certifications {
+  user_certification_id int          [pk, increment]
+  user_id               int          [not null, note: 'FK → users']
+  certification_id      int          [not null, note: 'FK → certifications']
+  date_obtained         date
+  expiry_date           date         [note: 'Some licenses/certs expire']
+  credential_id         varchar(100) [note: 'External verification ID']
+  status                varchar(30)  [not null, default: 'active', note: 'active | expired | revoked | in_progress']
+  created_at            timestamp    [not null, default: `NOW()`]
+  updated_at            timestamp    [not null, default: `NOW()`]
+
+  indexes {
+    (user_id, certification_id) [unique, name: 'uq_user_certifications']
+  }
+
+  Note: 'Junction table: which certifications a user holds. Many-to-many: users ↔ certifications.'
+}
+
+// Table 11: Career breaks — recorded neutrally, not as penalties
+Table career_breaks {
+  break_id     int          [pk, increment]
+  user_id      int          [not null, note: 'FK → users']
+  break_reason varchar(50)  [not null, note: 'parental_leave | health | caregiving | education | travel | personal | layoff | career_change | other']
+  start_date   date         [not null]
+  end_date     date         [note: 'NULL = currently on break']
+  description  text         [note: 'Optional user narrative']
+  created_at   timestamp    [not null, default: `NOW()`]
+  updated_at   timestamp    [not null, default: `NOW()`]
+
+  Note: 'Career breaks stored neutrally. A break is information, not automatic disqualification.'
+}
+
+
+// ============================================================================
+// LAYER 2: CAREER & REQUIREMENTS CATALOG
+// ============================================================================
+
+// Table 2: Broad career domains
+Table career_fields {
+  field_id    int          [pk, increment]
+  field_name  varchar(150) [unique, not null, note: 'e.g., Healthcare, IT, Education']
+  description text
+  is_active   boolean      [not null, default: true, note: 'Soft-disable without deleting']
+  created_at  timestamp    [not null, default: `NOW()`]
+
+  Note: 'Broad career domains. Adding a new field means inserting one row — zero schema changes.'
+}
+
+// Table 3: Central, reusable skill catalog
+Table skills {
+  skill_id    int          [pk, increment]
+  skill_name  varchar(150) [unique, not null]
+  category    varchar(100) [note: 'e.g., Programming, Clinical, Analytical']
+  description text
+  is_active   boolean      [not null, default: true]
+  created_at  timestamp    [not null, default: `NOW()`]
+
+  Note: 'Central skill catalog. Skills are reusable across career fields — never duplicated per field.'
+}
+
+// Table 4: Lookup table for education levels
+Table qualification_types {
+  qualification_type_id int          [pk, increment]
+  type_name             varchar(100) [unique, not null, note: 'e.g., Bachelor\'s Degree, ITI Certificate, MD']
+  level_rank            smallint     [note: 'Numeric ordering (1 = lowest) for comparisons']
+  description           text
+
+  Note: 'Lookup table for education levels. Allows the system to compare \"does the user meet minimum education?\"'
+}
+
+// Table 5: Specific job roles within a career field
+Table career_roles {
+  role_id                   int          [pk, increment]
+  field_id                  int          [not null, note: 'FK → career_fields']
+  role_title                varchar(200) [not null]
+  description               text
+  jurisdiction              varchar(150) [note: 'e.g., India, State of California']
+  organization              varchar(200) [note: 'e.g., UPSC, Google']
+  experience_years_required decimal(4,1) [note: 'Minimum years required. Must be >= 0']
+  is_active                 boolean      [not null, default: true]
+  created_at                timestamp    [not null, default: `NOW()`]
+  updated_at                timestamp    [not null, default: `NOW()`]
+
+  indexes {
+    (field_id, role_title, jurisdiction, organization) [unique, name: 'uq_career_roles_context']
+  }
+
+  Note: 'Specific job roles within a career field. Requirements belong to roles, not to entire fields.'
+}
+
+// Table 6: Central catalog of certifications and licenses
+Table certifications {
+  certification_id   int          [pk, increment]
+  certification_name varchar(200) [not null]
+  issuing_body       varchar(200) [note: 'e.g., ICAI, AWS, State Nursing Board']
+  field_id           int          [note: 'FK → career_fields (optional)']
+  description        text
+  is_active          boolean      [not null, default: true]
+  created_at         timestamp    [not null, default: `NOW()`]
+
+  indexes {
+    (certification_name, issuing_body) [unique, name: 'uq_certifications_name_issuer']
+  }
+
+  Note: 'Central catalog of certifications and professional licenses, reusable across roles.'
+}
+
+// Table 12: Links a user to a target career role
+Table career_goals {
+  goal_id     int          [pk, increment]
+  user_id     int          [not null, note: 'FK → users']
+  role_id     int          [not null, note: 'FK → career_roles']
+  priority    smallint     [not null, default: 1, note: 'Priority 1–5 scale (1 = highest)']
+  target_date date         [note: 'When the user hopes to be ready']
+  status      varchar(30)  [not null, default: 'exploring', note: 'exploring | active | achieved | paused | abandoned']
+  notes       text
+  created_at  timestamp    [not null, default: `NOW()`]
+  updated_at  timestamp    [not null, default: `NOW()`]
+
+  indexes {
+    (user_id, role_id) [unique, name: 'uq_career_goals_user_role']
+  }
+
+  Note: 'Links users to target career roles. A user can pursue multiple goals across different fields.'
+}
+
+// Table 13: What a target career role demands (polymorphic rows)
+Table career_requirements {
+  requirement_id        int          [pk, increment]
+  role_id               int          [not null, note: 'FK → career_roles']
+  requirement_type      varchar(50)  [not null, note: 'skill | education | certification | experience | eligibility | other']
+  skill_id              int          [note: 'FK → skills. Populated when type = skill']
+  qualification_type_id int          [note: 'FK → qualification_types. Populated when type = education']
+  certification_id      int          [note: 'FK → certifications. Populated when type = certification']
+  expected_proficiency  varchar(30)  [note: 'e.g., intermediate, advanced']
+  description           text         [note: 'Human-readable, especially for eligibility/other']
+  is_mandatory          boolean      [not null, default: true, note: 'TRUE = hard requirement, FALSE = nice-to-have']
+  priority              smallint     [not null, default: 3, note: 'Priority 1–5 scale']
+  created_at            timestamp    [not null, default: `NOW()`]
+  updated_at            timestamp    [not null, default: `NOW()`]
+
+  Note: 'What a career role demands. Polymorphic rows: requirement_type determines which FK is relevant.'
+}
+
+
+// ============================================================================
+// LAYER 3: GAP ANALYSIS
+// ============================================================================
+
+// Table 14: Lookup table for gap categories
+Table gap_types {
+  gap_type_id int          [pk, increment]
+  type_name   varchar(100) [unique, not null, note: 'e.g., Skill Gap, Education Gap']
+  description text
+
+  Note: 'Configurable gap categories. Extensible without schema changes — just insert new rows.'
+}
+
+// Table 15: Snapshot of a gap analysis at a point in time
+Table career_gap_analyses {
+  analysis_id           int          [pk, increment]
+  user_id               int          [not null, note: 'FK → users']
+  goal_id               int          [not null, note: 'FK → career_goals']
+  analysis_date         timestamp    [not null, default: `NOW()`]
+  overall_readiness_pct decimal(5,2) [note: 'e.g., 65.50 means 65.5% ready. Must be 0–100']
+  summary_notes         text
+  status                varchar(30)  [not null, default: 'completed', note: 'in_progress | completed | reviewed | archived']
+  created_at            timestamp    [not null, default: `NOW()`]
+
+  Note: 'Snapshot of a gap analysis. Historical records enable progress-over-time reporting.'
+}
+
+// Table 16: Individual gap entries within an analysis
+Table career_gap_items {
+  gap_item_id     int          [pk, increment]
+  analysis_id     int          [not null, note: 'FK → career_gap_analyses']
+  gap_type_id     int          [not null, note: 'FK → gap_types']
+  requirement_id  int          [note: 'FK → career_requirements (optional)']
+  gap_description text         [not null, note: 'Human-readable explanation']
+  current_state   text         [note: 'What the user currently has']
+  required_state  text         [note: 'What is needed']
+  gap_severity    varchar(20)  [not null, default: 'medium', note: 'low | medium | high | critical']
+  priority        smallint     [not null, default: 3, note: 'Priority 1–5 scale']
+  status          varchar(30)  [not null, default: 'identified', note: 'identified | in_progress | resolved | not_applicable']
+  evidence        text
+  review_date     date         [note: 'When this gap should be re-evaluated']
+  created_at      timestamp    [not null, default: `NOW()`]
+  updated_at      timestamp    [not null, default: `NOW()`]
+
+  Note: 'Individual gap entries within an analysis. Each row is one specific unmet or partially met requirement.'
+}
+
+
+// ============================================================================
+// LAYER 4: LEARNING & IMPROVEMENT
+// ============================================================================
+
+// Table 17: Catalog of learning materials
+Table learning_resources {
+  resource_id              int          [pk, increment]
+  resource_name            varchar(300) [not null]
+  resource_type            varchar(50)  [not null, note: 'course | book | tutorial | workshop | certification_program | mentorship | practice_exam | other']
+  provider                 varchar(200) [note: 'e.g., Coursera, Khan Academy']
+  url                      text
+  estimated_duration_hours decimal(6,1) [note: 'Must be > 0']
+  cost                     decimal(10,2) [note: 'Must be >= 0']
+  description              text
+  is_active                boolean      [not null, default: true]
+  created_at               timestamp    [not null, default: `NOW()`]
+
+  Note: 'Catalog of learning materials (courses, books, tutorials, etc.) for closing career gaps.'
+}
+
+// Table 18: Junction Table — learning_resources ↔ skills
+Table resource_skills {
+  resource_skill_id  int          [pk, increment]
+  resource_id        int          [not null, note: 'FK → learning_resources']
+  skill_id           int          [not null, note: 'FK → skills']
+  proficiency_taught varchar(30)  [note: 'What level the resource brings you to']
+
+  indexes {
+    (resource_id, skill_id) [unique, name: 'uq_resource_skills']
+  }
+
+  Note: 'Junction table: which skills a learning resource teaches. Many-to-many: resources ↔ skills.'
+}
+
+// Table 19: A user's structured plan to close gaps
+Table learning_plans {
+  plan_id                int          [pk, increment]
+  user_id                int          [not null, note: 'FK → users']
+  goal_id                int          [note: 'FK → career_goals (optional)']
+  plan_name              varchar(200) [not null]
+  description            text
+  start_date             date
+  target_completion_date date         [note: 'Must be >= start_date']
+  status                 varchar(30)  [not null, default: 'draft', note: 'draft | active | completed | paused | abandoned']
+  created_at             timestamp    [not null, default: `NOW()`]
+  updated_at             timestamp    [not null, default: `NOW()`]
+
+  Note: 'A user\'s structured plan to close career gaps. Linked to a career goal.'
+}
+
+// Table 20: Individual tasks within a learning plan
+Table learning_plan_items {
+  plan_item_id     int          [pk, increment]
+  plan_id          int          [not null, note: 'FK → learning_plans']
+  gap_item_id      int          [note: 'FK → career_gap_items (optional)']
+  resource_id      int          [note: 'FK → learning_resources (optional)']
+  task_description text         [not null]
+  sequence_order   smallint     [note: 'Order within the plan']
+  status           varchar(30)  [not null, default: 'pending', note: 'pending | in_progress | completed | skipped']
+  due_date         date
+  completed_date   date         [note: 'Only set when status = completed']
+  notes            text
+  created_at       timestamp    [not null, default: `NOW()`]
+  updated_at       timestamp    [not null, default: `NOW()`]
+
+  Note: 'Individual tasks within a learning plan. Links a gap item to a learning resource.'
+}
+
+
+// ============================================================================
+// LAYER 5: ASSESSMENTS
+// ============================================================================
+
+// Table 21: Catalog of assessments/tests
+Table assessments {
+  assessment_id   int          [pk, increment]
+  skill_id        int          [not null, note: 'FK → skills']
+  assessment_name varchar(200) [not null]
+  assessment_type varchar(50)  [not null, default: 'quiz', note: 'quiz | practical | project | interview | peer_review | certification_exam | other']
+  max_score       decimal(7,2) [note: 'Must be > 0']
+  passing_score   decimal(7,2) [note: 'Must be >= 0 and <= max_score']
+  description     text
+  is_active       boolean      [not null, default: true]
+  created_at      timestamp    [not null, default: `NOW()`]
+
+  Note: 'Catalog of skill assessments. Each assessment tests one specific skill.'
+}
+
+// Table 22: A user's result on an assessment
+Table assessment_results {
+  result_id     int          [pk, increment]
+  user_id       int          [not null, note: 'FK → users']
+  assessment_id int          [not null, note: 'FK → assessments']
+  attempt_date  timestamp    [not null, default: `NOW()`]
+  score         decimal(7,2) [note: 'Must be >= 0']
+  passed        boolean      [note: 'Can be computed or manually recorded for non-scored assessments']
+  evidence      text         [note: 'Link to certificate, screenshot, etc.']
+  notes         text
+  created_at    timestamp    [not null, default: `NOW()`]
+
+  Note: 'A user\'s result on an assessment. Multiple attempts allowed to track improvement over time.'
+}
+
+
+// ============================================================================
+// RELATIONSHIPS (All Foreign Keys)
+// ============================================================================
+
+// --- LAYER 2: Career Catalog Relationships ---
+
+// career_roles belongs to career_fields
+Ref: career_roles.field_id > career_fields.field_id
+
+// certifications optionally belongs to career_fields
+Ref: certifications.field_id > career_fields.field_id
+
+
+// --- LAYER 1: User Profile Detail Relationships ---
+
+// education_records belongs to users
+Ref: education_records.user_id > users.user_id
+
+// education_records references qualification_types
+Ref: education_records.qualification_type_id > qualification_types.qualification_type_id
+
+// user_skills belongs to users (junction: users ↔ skills)
+Ref: user_skills.user_id > users.user_id
+
+// user_skills belongs to skills (junction: users ↔ skills)
+Ref: user_skills.skill_id > skills.skill_id
+
+// user_experiences belongs to users
+Ref: user_experiences.user_id > users.user_id
+
+// user_experiences optionally belongs to career_fields
+Ref: user_experiences.field_id > career_fields.field_id
+
+// user_certifications belongs to users (junction: users ↔ certifications)
+Ref: user_certifications.user_id > users.user_id
+
+// user_certifications belongs to certifications (junction: users ↔ certifications)
+Ref: user_certifications.certification_id > certifications.certification_id
+
+// career_breaks belongs to users
+Ref: career_breaks.user_id > users.user_id
+
+
+// --- LAYER 2: Career Goals & Requirements Relationships ---
+
+// career_goals belongs to users
+Ref: career_goals.user_id > users.user_id
+
+// career_goals belongs to career_roles
+Ref: career_goals.role_id > career_roles.role_id
+
+// career_requirements belongs to career_roles
+Ref: career_requirements.role_id > career_roles.role_id
+
+// career_requirements optionally references skills (polymorphic: type = 'skill')
+Ref: career_requirements.skill_id > skills.skill_id
+
+// career_requirements optionally references qualification_types (polymorphic: type = 'education')
+Ref: career_requirements.qualification_type_id > qualification_types.qualification_type_id
+
+// career_requirements optionally references certifications (polymorphic: type = 'certification')
+Ref: career_requirements.certification_id > certifications.certification_id
+
+
+// --- LAYER 3: Gap Analysis Relationships ---
+
+// career_gap_analyses belongs to users
+Ref: career_gap_analyses.user_id > users.user_id
+
+// career_gap_analyses belongs to career_goals
+Ref: career_gap_analyses.goal_id > career_goals.goal_id
+
+// career_gap_items belongs to career_gap_analyses
+Ref: career_gap_items.analysis_id > career_gap_analyses.analysis_id
+
+// career_gap_items belongs to gap_types
+Ref: career_gap_items.gap_type_id > gap_types.gap_type_id
+
+// career_gap_items optionally references career_requirements
+Ref: career_gap_items.requirement_id > career_requirements.requirement_id
+
+
+// --- LAYER 4: Learning & Improvement Relationships ---
+
+// resource_skills belongs to learning_resources (junction: resources ↔ skills)
+Ref: resource_skills.resource_id > learning_resources.resource_id
+
+// resource_skills belongs to skills (junction: resources ↔ skills)
+Ref: resource_skills.skill_id > skills.skill_id
+
+// learning_plans belongs to users
+Ref: learning_plans.user_id > users.user_id
+
+// learning_plans optionally belongs to career_goals
+Ref: learning_plans.goal_id > career_goals.goal_id
+
+// learning_plan_items belongs to learning_plans
+Ref: learning_plan_items.plan_id > learning_plans.plan_id
+
+// learning_plan_items optionally references career_gap_items
+Ref: learning_plan_items.gap_item_id > career_gap_items.gap_item_id
+
+// learning_plan_items optionally references learning_resources
+Ref: learning_plan_items.resource_id > learning_resources.resource_id
+
+
+// --- LAYER 5: Assessment Relationships ---
+
+// assessments belongs to skills
+Ref: assessments.skill_id > skills.skill_id
+
+// assessment_results belongs to users
+Ref: assessment_results.user_id > users.user_id
+
+// assessment_results belongs to assessments
+Ref: assessment_results.assessment_id > assessments.assessment_id

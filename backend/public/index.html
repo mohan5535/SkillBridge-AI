@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillBridge AI — Universal Career Gap Tracker & Learning Engine</title>
+  <link rel="stylesheet" href="/portal/styles.css">
+</head>
+<body>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="app-shell">
+    <!-- PERSISTENT SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <div class="brand-wrapper" data-nav="landing" role="button" tabindex="0">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="brand-info">
+            <div class="brand-name">SkillBridge <span class="ai-pill">AI</span></div>
+            <span class="brand-tagline">Career Intelligence Engine</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-scroll">
+        <!-- Group: Overview & Access -->
+        <div>
+          <div class="nav-group-label">Platform</div>
+          <ul class="nav-list">
+            <li>
+              <a class="nav-link" data-nav="landing">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Overview &amp; Landing
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="auth">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Sign In &amp; Access
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group: Candidate Workspace -->
+        <div id="navGroupCandidate">
+          <div class="nav-group-label">Candidate Workspace</div>
+          <ul class="nav-list">
+            <li>
+              <a class="nav-link" data-nav="candidate-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Candidate Dashboard
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="candidate-profile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Candidate Profile
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="skills-management">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                Skills &amp; Experience
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="readiness-analysis">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Readiness Analysis
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="gap-analysis">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+                Skill Gap Matrix
+                <span class="nav-badge-pill" id="sidebarGapsCount">--</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="learning-roadmap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                Learning Roadmap
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="assessments">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Assessments &amp; Growth
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group: Counselor Portal -->
+        <div id="navGroupCounselor">
+          <div class="nav-group-label">Counselor Supervisory</div>
+          <ul class="nav-list">
+            <li>
+              <a class="nav-link" data-nav="counselor-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Counselor Dashboard
+                <span class="nav-badge-pill pill-indigo">Exec</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="counselor-candidates">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Candidate Directory
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="counselor-analytics">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Executive Analytics
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group: Industry Standards -->
+        <div>
+          <div class="nav-group-label">Industry Taxonomy</div>
+          <ul class="nav-list">
+            <li>
+              <a class="nav-link" data-nav="catalog">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Role Catalog Explorer
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sidebar Active User Identity -->
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <div class="user-avatar-circle" id="sidebarAvatar">SB</div>
+          <div class="user-meta-col">
+            <span class="user-name-label" id="sidebarUserName">Not Signed In</span>
+            <span class="user-role-label" id="sidebarUserRole">Guest Session</span>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" id="btnSidebarAuth" title="Manage Session">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT WORKSPACE -->
+    <div class="app-canvas">
+      <!-- Top Command Bar -->
+      <header class="top-command-bar">
+        <div class="command-bar-left">
+          <button class="btn-mobile-menu" id="btnMobileMenu" aria-label="Toggle Navigation">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="breadcrumb-trail">
+            <span>SkillBridge</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current" id="breadcrumbCurrentPage">Overview</span>
+          </div>
+        </div>
+
+        <div class="command-bar-right">
+          <div class="status-pill" id="dbStatusPill" title="Live PostgreSQL 18.6 Connection">
+            <span class="status-dot"></span>
+            <span id="dbStatusLabel">PostgreSQL 18.6</span>
+          </div>
+
+          <div class="persona-switcher-box">
+            <label for="userSelect">Active Session:</label>
+            <select id="userSelect" class="form-select persona-select-compact">
+              <option value="" disabled selected>Loading live users...</option>
+            </select>
+          </div>
+
+          <button class="btn btn-outline btn-sm" id="btnRefresh">Refresh</button>
+          <button class="btn btn-primary btn-sm" id="btnOpenAuthModal">Auth Center</button>
+        </div>
+      </header>
+
+      <!-- Main Page View Area -->
+      <main class="main-view-area">
+        <!-- Global Alert Banner -->
+        <div id="alertBanner" class="alert-banner hidden" role="alert"></div>
+
+        <!-- ================================================================ -->
+        <!-- PAGE 1: LANDING PAGE -->
+        <!-- ================================================================ -->
+        <section id="page-landing" class="page-view active">
+          <div class="landing-hero">
+            <div class="landing-badge">
+              <span>Enterprise Architecture • PostgreSQL 18.6 Verified</span>
+            </div>
+            <h1 class="landing-title">
+              Precision <span class="gradient-text">Career Gap Intelligence</span> &amp; Sequenced Upskilling.
+            </h1>
+            <p class="landing-subtitle">
+              Evaluate candidate readiness across five weighted domains, audit career breaks without stigma,
+              and generate dependency-sequenced learning roadmaps grounded in real PostgreSQL analytics.
+            </p>
+            <div class="landing-cta-group">
+              <button class="btn btn-primary btn-lg" id="btnLandingCandidate">Open Candidate Workspace</button>
+              <button class="btn btn-secondary btn-lg" id="btnLandingCounselor">Launch Counselor Portal</button>
+              <button class="btn btn-outline btn-lg" id="btnLandingAuth">Sign In / Register</button>
+            </div>
+
+            <div class="feature-grid-3">
+              <div class="feature-box">
+                <div class="feature-icon-box">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3 class="feature-title">Multi-Factor Readiness Engine</h3>
+                <p class="feature-desc">
+                  Mathematical scoring across Skills (40%), Experience (20%), Education (20%), Certifications (10%), and Verified Assessments (10%).
+                </p>
+              </div>
+              <div class="feature-box">
+                <div class="feature-icon-box feature-icon-cyan">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                </div>
+                <h3 class="feature-title">Automated Sequenced Roadmaps</h3>
+                <p class="feature-desc">
+                  Every detected gap automatically maps to curated catalog learning resources ordered by dependency constraints and gap severity.
+                </p>
+              </div>
+              <div class="feature-box">
+                <div class="feature-icon-box feature-icon-purple">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3 class="feature-title">Zero-Trust Counselor Analytics</h3>
+                <p class="feature-desc">
+                  Sub-15ms multi-CTE executive cohort dashboards guarded by strict JWT cookies, session-bound CSRF tokens, and RBAC isolation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- PAGE 2: LOGIN & REGISTRATION GATEWAY -->
+        <!-- ================================================================ -->
+        <section id="page-auth" class="page-view">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Authentication &amp; Access Gateway</h1>
+              <p class="page-subtitle">Sign in with verified credentials, self-register as a candidate, or activate an account via single-use token</p>
+            </div>
+          </div>
+
+          <div class="auth-page-container">
+            <div class="card-panel">
+              <div class="auth-tabs" id="pageAuthTabs">
+                <button type="button" class="auth-tab-btn active" data-page-auth-tab="pauth-login">Sign In</button>
+                <button type="button" class="auth-tab-btn" data-page-auth-tab="pauth-register">Register Candidate</button>
+                <button type="button" class="auth-tab-btn" data-page-auth-tab="pauth-activate">Activate Account</button>
+              </div>
+
+              <!-- Sign In Form -->
+              <div id="pauth-login" class="auth-tab-panel active">
+                <form id="pageFormLogin">
+                  <div class="form-group">
+                    <label for="pageLoginEmail">Email Address</label>
+                    <input type="email" id="pageLoginEmail" class="form-input" placeholder="name@domain.com" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="pageLoginPassword">Password</label>
+                    <input type="password" id="pageLoginPassword" class="form-input" placeholder="••••••••••••" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary w-100">Sign In to Workspace</button>
+                  <p class="form-hint">Protected by brute-force rate limiting (5 attempts / 15 min) and bcrypt cost factor 12.</p>
+                </form>
+              </div>
+
+              <!-- Registration Form -->
+              <div id="pauth-register" class="auth-tab-panel">
+                <form id="pageFormRegister">
+                  <div class="form-group">
+                    <label for="pageRegFullName">Full Name</label>
+                    <input type="text" id="pageRegFullName" class="form-input" placeholder="Your full name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="pageRegEmail">Email Address</label>
+                    <input type="email" id="pageRegEmail" class="form-input" placeholder="candidate@example.com" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="pageRegPassword">Password (Min 8 chars, upper, lower, digit, symbol)</label>
+                    <input type="password" id="pageRegPassword" class="form-input" placeholder="Create strong password" required>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group flex-1">
+                      <label for="pageRegRegion">State / Region</label>
+                      <input type="text" id="pageRegRegion" class="form-input" placeholder="e.g. Karnataka">
+                    </div>
+                    <div class="form-group flex-1">
+                      <label for="pageRegCountry">Country</label>
+                      <input type="text" id="pageRegCountry" class="form-input" value="India" required>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary w-100">Create Candidate Account</button>
+                  <p class="form-hint">New accounts strictly enforce <code>role = 'candidate'</code> and issue HTTP-only JWT session cookies.</p>
+                </form>
+              </div>
+
+              <!-- Activation Form -->
+              <div id="pauth-activate" class="auth-tab-panel">
+                <form id="pageFormActivate">
+                  <div class="form-group">
+                    <label for="pageActToken">Activation Token (64-character SHA-256 hex)</label>
+                    <input type="text" id="pageActToken" class="form-input font-mono" placeholder="Enter 64-character single-use token" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="pageActPassword">Set Password</label>
+                    <input type="password" id="pageActPassword" class="form-input" placeholder="Create permanent password" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary w-100">Activate Account</button>
+                  <p class="form-hint">Validates cryptographic token ownership and clears token after activation (anti-replay).</p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- CANDIDATE WORKSPACE CONTAINER (Pages 3 through 9) -->
+        <!-- ================================================================ -->
+        <div id="candidateViewContainer">
+
+          <!-- PAGE 3: CANDIDATE DASHBOARD -->
+          <section id="page-candidate-dashboard" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title" id="dashWelcomeTitle">Candidate Overview</h1>
+                <p class="page-subtitle" id="dashMetaSubtitle">Loading active career goal from PostgreSQL...</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-outline btn-sm" data-nav="candidate-profile">View Full Profile</button>
+                <button class="btn btn-primary btn-sm" id="btnDashRunAnalysis">Recalculate Readiness</button>
+              </div>
+            </div>
+
+            <!-- Hero Readiness Meter Card -->
+            <div class="readiness-hero-card">
+              <div class="readiness-details-col">
+                <div class="readiness-status-badge badge-indigo" id="dashCategoryBadge">Evaluating Readiness...</div>
+                <h2 class="hero-role-title" id="dashTargetRoleTitle">Target Role: Loading...</h2>
+                <p class="hero-role-desc" id="dashReadinessSummary">
+                  Your multi-factor readiness rating is calculated continuously against industry role requirements, professional tenure, verified certifications, and test results.
+                </p>
+                <div class="d-flex gap-2 flex-wrap">
+                  <button class="btn btn-secondary btn-sm" data-nav="gap-analysis">Inspect Skill Gaps</button>
+                  <button class="btn btn-secondary btn-sm" data-nav="learning-roadmap">Open Learning Roadmap</button>
+                </div>
+              </div>
+
+              <!-- SVG Animated Radial Gauge -->
+              <div class="gauge-wrapper">
+                <svg class="gauge-svg" viewBox="0 0 120 120">
+                  <circle class="gauge-bg-circle" cx="60" cy="60" r="50"></circle>
+                  <circle class="gauge-fill-circle" id="dashGaugeCircle" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16"></circle>
+                </svg>
+                <div class="gauge-text-center">
+                  <span class="gauge-percent" id="dashGaugeValue">--%</span>
+                  <span class="gauge-label">Readiness</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-Component Scorecard -->
+            <h3 class="panel-title mb-3">Multi-Factor Component Scorecard</h3>
+            <div class="grid-5-scorecard">
+              <div class="scorecard-item">
+                <div class="scorecard-header"><span class="scorecard-title">Skills Match</span><span class="scorecard-weight">40%</span></div>
+                <div class="scorecard-value" id="skillsScorePct">--%</div>
+                <div class="progress-track"><div class="progress-bar-fill fill-indigo" id="barSkills"></div></div>
+                <span class="scorecard-caption">Role skill proficiency</span>
+              </div>
+              <div class="scorecard-item">
+                <div class="scorecard-header"><span class="scorecard-title">Experience</span><span class="scorecard-weight">20%</span></div>
+                <div class="scorecard-value" id="expScorePct">--%</div>
+                <div class="progress-track"><div class="progress-bar-fill fill-purple" id="barExp"></div></div>
+                <span class="scorecard-caption" id="expMonthsLabel">Tenure vs target</span>
+              </div>
+              <div class="scorecard-item">
+                <div class="scorecard-header"><span class="scorecard-title">Education</span><span class="scorecard-weight">20%</span></div>
+                <div class="scorecard-value" id="eduScorePct">--%</div>
+                <div class="progress-track"><div class="progress-bar-fill fill-cyan" id="barEdu"></div></div>
+                <span class="scorecard-caption">Qualification level tier</span>
+              </div>
+              <div class="scorecard-item">
+                <div class="scorecard-header"><span class="scorecard-title">Certifications</span><span class="scorecard-weight">10%</span></div>
+                <div class="scorecard-value" id="certsScorePct">--%</div>
+                <div class="progress-track"><div class="progress-bar-fill fill-emerald" id="barCerts"></div></div>
+                <span class="scorecard-caption">Active credentials</span>
+              </div>
+              <div class="scorecard-item">
+                <div class="scorecard-header"><span class="scorecard-title">Assessments</span><span class="scorecard-weight">10%</span></div>
+                <div class="scorecard-value" id="assessScorePct">--%</div>
+                <div class="progress-track"><div class="progress-bar-fill fill-amber" id="barAssess"></div></div>
+                <span class="scorecard-caption">Verified test score</span>
+              </div>
+            </div>
+
+            <!-- Next Priorities Preview -->
+            <div class="grid-2-cols">
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Priority Gaps Detected</h3>
+                    <p class="panel-desc">Highest impact blockers holding readiness score back</p>
+                  </div>
+                  <button class="btn btn-outline btn-sm" data-nav="gap-analysis">See All</button>
+                </div>
+                <div id="dashTopGapsPreview"><div class="loading-skeleton mb-2"></div><div class="loading-skeleton"></div></div>
+              </div>
+
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Next Roadmap Milestones</h3>
+                    <p class="panel-desc">Ordered action steps generated for your target career</p>
+                  </div>
+                  <button class="btn btn-outline btn-sm" data-nav="learning-roadmap">Open Roadmap</button>
+                </div>
+                <div id="dashTopRoadmapPreview"><div class="loading-skeleton mb-2"></div><div class="loading-skeleton"></div></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGE 4: CANDIDATE PROFILE -->
+          <section id="page-candidate-profile" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title" id="profileFullName">Candidate Profile</h1>
+                <p class="page-subtitle" id="profileMeta">Location &amp; Identity Details</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-primary btn-sm" id="btnOpenEditProfile">Edit Profile</button>
+              </div>
+            </div>
+
+            <div class="grid-2-cols">
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Education History (Query 1)</h3>
+                    <p class="panel-desc">Academic credentials sorted by qualification level rank</p>
+                  </div>
+                </div>
+                <div class="timeline-list" id="profileEducationList">Loading education...</div>
+              </div>
+
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Professional Experience (Query 3)</h3>
+                    <p class="panel-desc">Verified roles and organizational tenure</p>
+                  </div>
+                </div>
+                <div class="timeline-list" id="profileExperienceList">Loading experiences...</div>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Certifications &amp; Industry Licenses</h3>
+                  <p class="panel-desc">Active credentials mapped against target domain</p>
+                </div>
+              </div>
+              <div id="profileCertsList">Loading certifications...</div>
+            </div>
+          </section>
+
+          <!-- PAGE 5: SKILLS & EXPERIENCE MANAGEMENT -->
+          <section id="page-skills-management" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Skills &amp; Career Break Management</h1>
+                <p class="page-subtitle">Maintain technical proficiencies and log career transitions using bias-free categorization (FR-02)</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-primary btn-sm" id="btnOpenAddSkill">+ Add Skill</button>
+                <button class="btn btn-secondary btn-sm" id="btnOpenAddBreak">+ Record Career Break</button>
+              </div>
+            </div>
+
+            <div class="grid-2-cols">
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Acquired Skills Portfolio (Query 2)</h3>
+                    <p class="panel-desc">Proficiencies tracked directly in PostgreSQL <code>user_skills</code></p>
+                  </div>
+                </div>
+                <div class="skills-chip-container" id="profileSkillsChips">Loading skills...</div>
+              </div>
+
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Career Breaks &amp; Pauses (Query 9 Intake)</h3>
+                    <p class="panel-desc">Neutral tracking of sabbaticals, caregiving, health, or education breaks</p>
+                  </div>
+                </div>
+                <div class="timeline-list" id="profileBreaksList">Loading career breaks...</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGE 6: CAREER READINESS ANALYSIS -->
+          <section id="page-readiness-analysis" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Multi-Factor Career Readiness Analysis</h1>
+                <p class="page-subtitle">Transparent breakdown of your readiness score across all five evaluation pillars</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-primary btn-sm" id="btnTriggerAnalysis">Recalculate Score</button>
+              </div>
+            </div>
+
+            <div class="formula-banner">
+              <span><strong>Algorithm Model (Phase 9):</strong> Readiness = 0.40(Skills) + 0.20(Experience) + 0.20(Education) + 0.10(Certifications) + 0.10(Assessments)</span>
+              <span class="badge badge-indigo" id="readinessCategoryBadge">Evaluating</span>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <h3 class="panel-title">Weighted Contribution Breakdown Chart</h3>
+              </div>
+              <div id="readinessVisualChart">
+                <div class="chart-bar-row">
+                  <span class="chart-bar-label">Skills Match (40%)</span>
+                  <div class="chart-bar-track"><div class="progress-bar-fill fill-indigo" id="chartBarSkills"></div></div>
+                  <span class="chart-bar-val" id="chartValSkills">0%</span>
+                </div>
+                <div class="chart-bar-row">
+                  <span class="chart-bar-label">Experience (20%)</span>
+                  <div class="chart-bar-track"><div class="progress-bar-fill fill-purple" id="chartBarExp"></div></div>
+                  <span class="chart-bar-val" id="chartValExp">0%</span>
+                </div>
+                <div class="chart-bar-row">
+                  <span class="chart-bar-label">Education (20%)</span>
+                  <div class="chart-bar-track"><div class="progress-bar-fill fill-cyan" id="chartBarEdu"></div></div>
+                  <span class="chart-bar-val" id="chartValEdu">0%</span>
+                </div>
+                <div class="chart-bar-row">
+                  <span class="chart-bar-label">Certifications (10%)</span>
+                  <div class="chart-bar-track"><div class="progress-bar-fill fill-emerald" id="chartBarCerts"></div></div>
+                  <span class="chart-bar-val" id="chartValCerts">0%</span>
+                </div>
+                <div class="chart-bar-row">
+                  <span class="chart-bar-label">Assessments (10%)</span>
+                  <div class="chart-bar-track"><div class="progress-bar-fill fill-amber" id="chartBarAssess"></div></div>
+                  <span class="chart-bar-val" id="chartValAssess">0%</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGE 7: SKILL GAP ANALYSIS -->
+          <section id="page-gap-analysis" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Precision Skill Gap Analysis (Query 8)</h1>
+                <p class="page-subtitle">Side-by-side comparison of candidate proficiency rank against industry role requirements</p>
+              </div>
+              <div class="page-actions">
+                <span class="badge badge-critical" id="totalGapsBadge">-- Gaps Found</span>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <h3 class="panel-title">Query 8: Role Requirement Match Matrix</h3>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Skill / Domain</th>
+                      <th>Required Proficiency</th>
+                      <th>Current Level</th>
+                      <th>Mandatory</th>
+                      <th>Match Verdict</th>
+                    </tr>
+                  </thead>
+                  <tbody id="skillMatchTableBody">
+                    <tr><td colspan="6" class="loading-cell">Loading skill match matrix...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <h3 class="panel-title">Prioritized Career Gaps &amp; Severity Classification</h3>
+              </div>
+              <div id="gapItemsList">Loading gap items...</div>
+            </div>
+          </section>
+
+          <!-- PAGE 8: LEARNING ROADMAP -->
+          <section id="page-learning-roadmap" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Automated Sequenced Learning Roadmap</h1>
+                <p class="page-subtitle">Curated educational tasks sequenced by dependency and gap severity</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-primary btn-sm" id="btnGenerateRoadmap">Regenerate Dynamic Roadmap</button>
+              </div>
+            </div>
+
+            <div class="grid-4-kpis">
+              <div class="kpi-card">
+                <span class="kpi-label">Tasks Sequenced</span>
+                <span class="kpi-val" id="rmTotalTasks">0</span>
+                <span class="kpi-sub">Total learning modules</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Estimated Duration</span>
+                <span class="kpi-val"><span id="rmTotalHours">0</span>h</span>
+                <span class="kpi-sub">Total study hours</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Critical Priorities</span>
+                <span class="kpi-val kpi-danger" id="rmCriticalCount">0</span>
+                <span class="kpi-sub">Immediate remediation</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">High Priorities</span>
+                <span class="kpi-val kpi-warning" id="rmHighCount">0</span>
+                <span class="kpi-sub">Secondary targets</span>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <h3 class="panel-title">Sequenced Curriculum Pipeline</h3>
+              </div>
+              <div class="roadmap-timeline" id="roadmapTimeline">
+                <div class="loading-state">Loading sequenced learning tasks...</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGE 9: ASSESSMENTS & PROGRESS -->
+          <section id="page-assessments" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Skill Assessments &amp; Retest Growth</h1>
+                <p class="page-subtitle">Submit verified skill assessments and track longitudinal score growth (Queries 13 &amp; 14)</p>
+              </div>
+            </div>
+
+            <div class="grid-2-cols">
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <h3 class="panel-title">Attempt History &amp; Verified Scores (Query 13)</h3>
+                </div>
+                <div class="table-responsive">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Assessment</th>
+                        <th>Score</th>
+                        <th>Max</th>
+                        <th>Result</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody id="assessmentHistoryTableBody">
+                      <tr><td colspan="5" class="loading-cell">Loading attempt history...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-panel">
+                  <div class="card-panel-header">
+                    <h3 class="panel-title">Score Improvement Growth (Query 14)</h3>
+                  </div>
+                  <div id="growthReportContainer">Loading growth data...</div>
+                </div>
+
+                <div class="card-panel">
+                  <div class="card-panel-header">
+                    <h3 class="panel-title">Submit Verified Assessment Attempt</h3>
+                  </div>
+                  <form id="quizSubmitForm">
+                    <div class="form-group">
+                      <label for="assessmentSelect">Select Catalog Assessment</label>
+                      <select id="assessmentSelect" class="form-select"></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="quizScoreInput">Verified Score (0 to Max Score)</label>
+                      <input type="number" id="quizScoreInput" class="form-input" min="0" max="100" value="85" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="btnSubmitQuiz">Submit Verified Assessment</button>
+                    <p class="form-hint">Enforces CSRF protection, RBAC candidate binding, and database max_score constraints.</p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- COUNSELOR PORTAL CONTAINER (Pages 10 through 12) -->
+        <!-- ================================================================ -->
+        <div id="counselorViewContainer" class="hidden">
+
+          <!-- PAGE 10: COUNSELOR DASHBOARD -->
+          <section id="page-counselor-dashboard" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Counselor Supervisory Dashboard</h1>
+                <p class="page-subtitle">Real-time cohort visibility utilizing Query 15 Multi-CTE architecture</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-outline btn-sm" id="btnRefreshAnalytics">Reload Live Analytics</button>
+              </div>
+            </div>
+
+            <div class="grid-4-kpis">
+              <div class="kpi-card">
+                <span class="kpi-label">Active Cohort</span>
+                <span class="kpi-val" id="kpiTotalCandidates">--</span>
+                <span class="kpi-sub">Registered candidates</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Average Readiness</span>
+                <span class="kpi-val" id="kpiAvgReadiness">--%</span>
+                <span class="kpi-sub">Multi-factor weighted average</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Active Gaps</span>
+                <span class="kpi-val" id="kpiTotalGaps">--</span>
+                <span class="kpi-sub">Across cohort goals</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Task Velocity</span>
+                <span class="kpi-val" id="kpiLearningTasks">--</span>
+                <span class="kpi-sub">Curated roadmap modules</span>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Query 15: Cohort Career Readiness Overview</h3>
+                  <p class="panel-desc">Isolated CTE aggregations eliminating Cartesian product errors</p>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Candidate Name</th>
+                      <th>Target Role</th>
+                      <th>Career Field</th>
+                      <th>Readiness</th>
+                      <th>Gaps</th>
+                      <th>Tasks Done / Total</th>
+                      <th>Progress</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="counselorDashboardTableBody">
+                    <tr><td colspan="8" class="loading-cell">Loading executive analytics...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGE 11: CANDIDATE MANAGEMENT -->
+          <section id="page-counselor-candidates" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Candidate Management &amp; Directory</h1>
+                <p class="page-subtitle">Live directory populated dynamically from PostgreSQL <code>users</code> table via <code>GET /api/users</code></p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-outline btn-sm" id="btnRefreshRoster">Refresh Directory</button>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header flex-wrap gap-4">
+                <h3 class="panel-title">Registered Candidates Roster</h3>
+                <div class="roster-search-box">
+                  <input type="search" id="candidateSearchInput" class="form-input" placeholder="Filter by name, email, or country...">
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Candidate Name</th>
+                      <th>Email</th>
+                      <th>Region</th>
+                      <th>Country</th>
+                      <th>Registered Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="counselorRosterTableBody">
+                    <tr><td colspan="7" class="loading-cell">Loading directory...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGE 12: EXECUTIVE ANALYTICS -->
+          <section id="page-counselor-analytics" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Executive Cohort Analytics &amp; Security</h1>
+                <p class="page-subtitle">Intervention analytics (Queries 7, 9, 11) and real-time RBAC authorization boundary verification</p>
+              </div>
+            </div>
+
+            <div class="grid-2-cols">
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Query 7: At-Risk Candidates (&lt; 60% Readiness)</h3>
+                    <p class="panel-desc">Candidates requiring immediate advisory support</p>
+                  </div>
+                  <span class="badge badge-critical" id="atRiskCountBadge">-- At-Risk</span>
+                </div>
+                <div id="atRiskCandidatesList">Loading at-risk cohort...</div>
+              </div>
+
+              <div class="card-panel">
+                <div class="card-panel-header">
+                  <div>
+                    <h3 class="panel-title">Query 9: Career Break Impact Cohort</h3>
+                    <p class="panel-desc">Break duration and readiness correlation</p>
+                  </div>
+                </div>
+                <div id="careerBreakCohortList">Loading break cohort...</div>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Query 11: Roadmap Task Velocity</h3>
+                  <p class="panel-desc">Aggregated task completion rates per candidate</p>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Candidate Name</th>
+                      <th>Target Role</th>
+                      <th>Total Tasks</th>
+                      <th>Completed</th>
+                      <th>In Progress</th>
+                      <th>Pending</th>
+                      <th>Completion Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody id="taskSummaryTableBody">
+                    <tr><td colspan="7" class="loading-cell">Loading task velocity...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Interactive RBAC Boundary Security Tester -->
+            <div class="card-panel rbac-security-panel">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Interactive RBAC Security Barrier Tester</h3>
+                  <p class="panel-desc">Verifies strict enforcement of HTTP 403 Forbidden when Candidate credentials request Executive Analytics</p>
+                </div>
+                <button class="btn btn-danger btn-sm" id="btnTestRbacBlocked">Test Candidate Access Blocked (Verify HTTP 403)</button>
+              </div>
+              <div id="rbacTestResult" class="rbac-result-container hidden">
+                <div class="rbac-result-header">
+                  <span class="badge badge-critical" id="rbacStatusBadge">HTTP 403 FORBIDDEN_ROLE</span>
+                  <span class="text-muted text-xs" id="rbacResultTimestamp"></span>
+                </div>
+                <pre class="rbac-json-output" id="rbacJsonOutput"></pre>
+                <p class="text-secondary text-sm-body">Middleware verified strict RBAC boundary enforcement on <code>GET /api/analytics/dashboard</code>.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- UTILITY PAGE: CATALOG EXPLORER -->
+        <!-- ================================================================ -->
+        <section id="page-catalog" class="page-view">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Career Taxonomy &amp; Standards Explorer</h1>
+              <p class="page-subtitle">Browse normalized career fields, roles, and polymorphic requirements (Queries 4 &amp; 5)</p>
+            </div>
+          </div>
+
+          <div class="card-panel">
+            <div class="grid-2-cols">
+              <div>
+                <div class="form-group">
+                  <label for="catalogRoleSelect">Select Target Industry Role</label>
+                  <select id="catalogRoleSelect" class="form-select"></select>
+                </div>
+                <div id="catalogRoleDetails">Select a role to view requirements...</div>
+              </div>
+              <div>
+                <h4 class="panel-title mb-3">Polymorphic Role Requirements (Query 5)</h4>
+                <div id="catalogRequirementsList">Loading requirements...</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span>SkillBridge AI &bull; Universal Career Gap Tracker &amp; Roadmap Engine</span>
+        <div class="footer-links">
+          <a href="/api/health" target="_blank">Health Tracer API</a>
+          <a href="/api/catalog/roles" target="_blank">Role Catalog API</a>
+          <a href="/api/analytics/dashboard" target="_blank">Analytics API</a>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODAL 1: EDIT PROFILE -->
+  <div id="modalEditProfile" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Candidate Profile</h3>
+        <button type="button" class="btn-close" data-close-modal="modalEditProfile">&times;</button>
+      </div>
+      <form id="formEditProfile">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="editFullName">Full Name</label>
+            <input type="text" id="editFullName" class="form-input" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="editRegion">State / Region</label>
+              <input type="text" id="editRegion" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label for="editCountry">Country</label>
+              <input type="text" id="editCountry" class="form-input" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="editPhone">Phone Number</label>
+              <input type="text" id="editPhone" class="form-input">
+            </div>
+            <div class="form-group flex-1">
+              <label for="editDob">Date of Birth</label>
+              <input type="date" id="editDob" class="form-input">
+            </div>
+          </div>
+          <p class="form-hint">Updates PostgreSQL <code>users</code> table via <code>PUT /api/users/:id</code> with CSRF signature.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalEditProfile">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveProfile">Save Profile</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ADD SKILL -->
+  <div id="modalAddSkill" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Skill to Portfolio</h3>
+        <button type="button" class="btn-close" data-close-modal="modalAddSkill">&times;</button>
+      </div>
+      <form id="formAddSkill">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="selectSkillId">Catalog Skill</label>
+            <select id="selectSkillId" class="form-select" required></select>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="selectProficiency">Proficiency Level</label>
+              <select id="selectProficiency" class="form-select" required>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate" selected>Intermediate</option>
+                <option value="advanced">Advanced</option>
+                <option value="expert">Expert</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label for="inputSkillYears">Years of Experience</label>
+              <input type="number" id="inputSkillYears" class="form-input" min="0" max="40" step="0.5" value="1" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputSkillEvidence">Evidence / Verification Note</label>
+            <input type="text" id="inputSkillEvidence" class="form-input" placeholder="e.g. GitHub repo or verified coursework">
+          </div>
+          <p class="form-hint">Persists via <code>POST /api/users/:id/skills</code> with CSRF validation.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalAddSkill">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveSkill">Add Skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: RECORD CAREER BREAK -->
+  <div id="modalAddCareerBreak" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Record Career Break</h3>
+        <button type="button" class="btn-close" data-close-modal="modalAddCareerBreak">&times;</button>
+      </div>
+      <form id="formAddCareerBreak">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="selectBreakReason">Neutral Categorization (FR-02)</label>
+            <select id="selectBreakReason" class="form-select" required>
+              <option value="caregiving">Caregiving</option>
+              <option value="health">Health / Medical</option>
+              <option value="education">Education &amp; Upskilling</option>
+              <option value="career_change">Career Change / Transition</option>
+              <option value="personal">Personal / Recovery</option>
+              <option value="parental_leave">Parental Leave</option>
+              <option value="travel">Travel &amp; Relocation</option>
+              <option value="layoff">Layoff / Restructuring</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="inputBreakStart">Start Date</label>
+              <input type="date" id="inputBreakStart" class="form-input" required>
+            </div>
+            <div class="form-group flex-1">
+              <label for="inputBreakEnd">End Date (Optional if Ongoing)</label>
+              <input type="date" id="inputBreakEnd" class="form-input">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputBreakDesc">Context / Description</label>
+            <textarea id="inputBreakDesc" class="form-input" rows="3" placeholder="Brief context regarding upskilling or transition..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalAddCareerBreak">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveBreak">Save Break</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: AUTHENTICATION & SECURITY CENTER -->
+  <div id="modalAuth" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-dialog-wide">
+      <div class="modal-header">
+        <h3 class="modal-title">Authentication &amp; Session Management</h3>
+        <button type="button" class="btn-close" data-close-modal="modalAuth">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab-btn active" data-auth-tab="auth-register">Register</button>
+          <button type="button" class="auth-tab-btn" data-auth-tab="auth-login">Login</button>
+          <button type="button" class="auth-tab-btn" data-auth-tab="auth-activate">Activate</button>
+          <button type="button" class="auth-tab-btn" data-auth-tab="auth-session">Session &amp; Logout</button>
+        </div>
+
+        <div id="auth-register" class="auth-tab-panel active">
+          <form id="formAuthRegister">
+            <div class="form-group">
+              <label for="regFullName">Full Name</label>
+              <input type="text" id="regFullName" class="form-input" placeholder="e.g. Vikram Seth" required>
+            </div>
+            <div class="form-group">
+              <label for="regEmail">Email Address</label>
+              <input type="email" id="regEmail" class="form-input" placeholder="vikram@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="regPassword">Password</label>
+              <input type="password" id="regPassword" class="form-input" placeholder="Min 8 chars, upper, lower, symbol" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="regRegion">State / Region</label>
+                <input type="text" id="regRegion" class="form-input" placeholder="Maharashtra">
+              </div>
+              <div class="form-group flex-1">
+                <label for="regCountry">Country</label>
+                <input type="text" id="regCountry" class="form-input" value="India" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Register Candidate Account</button>
+          </form>
+        </div>
+
+        <div id="auth-login" class="auth-tab-panel">
+          <form id="formAuthLogin">
+            <div class="form-group">
+              <label for="loginEmail">Email Address</label>
+              <input type="email" id="loginEmail" class="form-input" placeholder="name@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" class="form-input" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign In</button>
+          </form>
+        </div>
+
+        <div id="auth-activate" class="auth-tab-panel">
+          <form id="formAuthActivate">
+            <div class="form-group">
+              <label for="actToken">Activation Token (64-char SHA-256 hex)</label>
+              <input type="text" id="actToken" class="form-input font-mono" required>
+            </div>
+            <div class="form-group">
+              <label for="actPassword">Set Password</label>
+              <input type="password" id="actPassword" class="form-input" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Activate Account</button>
+          </form>
+        </div>
+
+        <div id="auth-session" class="auth-tab-panel">
+          <div class="session-info-card">
+            <h4 class="mb-2">Active Session Identity</h4>
+            <div id="sessionIdentityInfo" class="mb-3 text-secondary">Checking session...</div>
+            <div class="d-flex gap-2 flex-wrap">
+              <button type="button" class="btn btn-outline btn-sm" id="btnCheckSessionMe">Verify /api/auth/me</button>
+              <button type="button" class="btn btn-danger btn-sm" id="btnAuthLogout">Sign Out &amp; Clear Cookies</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/portal/app.js"></script>
+</body>
+</html>

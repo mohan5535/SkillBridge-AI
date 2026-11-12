@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph PresentationTier ["1. Presentation Tier (Client Layer)"]
+        UI1["Candidate Web Portal\n(Next.js / React)"]
+        UI2["Counselor Executive Dashboard"]
+        UI3["Mobile / PWA Client"]
+    end
+
+    subgraph ApiTier ["2. Application & API Controller Tier"]
+        API1["RESTful API Gateway"]
+        API2["Auth & Session Management"]
+        API3["Reporting & Analytics Controller"]
+    end
+
+    subgraph BusinessTier ["3. Business Logic & Intelligence Engines"]
+        ENG1["Universal Gap Analysis Engine"]
+        ENG2["Roadmap & Learning Plan Generator"]
+        ENG3["Weighted Readiness Calculator"]
+        ENG4["Assessment Scoring & Growth Detector"]
+    end
+
+    subgraph PersistenceTier ["4. Persistence Tier (PostgreSQL 18 Engine)"]
+        DB1[("skillbridge_db\n22 Relational Tables (3NF)")]
+        DB2["33 CHECK Constraints & Strict Enums"]
+        DB3["32 Foreign Keys (Zero Orphans)"]
+        DB4["15 Analytical SQL Queries (Isolated CTEs)"]
+    end
+
+    PresentationTier <--> ApiTier
+    ApiTier <--> BusinessTier
+    BusinessTier <--> PersistenceTier

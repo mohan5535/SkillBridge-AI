@@ -1,0 +1,43 @@
+erDiagram
+    users ||--o{ education_records : has
+    users ||--o{ user_skills : possesses
+    users ||--o{ user_experiences : holds
+    users ||--o{ user_certifications : achieves
+    users ||--o{ career_breaks : experiences
+    users ||--o{ career_goals : targets
+    users ||--o{ career_gap_analyses : evaluated_in
+    users ||--o{ learning_plans : executes
+    users ||--o{ assessment_results : takes
+
+    qualification_types ||--o{ education_records : categorizes
+    qualification_types ||--o{ career_requirements : specifies
+
+    skills ||--o{ user_skills : identified_by
+    skills ||--o{ career_requirements : mandates
+    skills ||--o{ resource_skills : taught_in
+    skills ||--o{ assessments : tested_by
+
+    career_fields ||--o{ career_roles : groups
+    career_fields ||--o{ certifications : domain_of
+    career_fields ||--o{ user_experiences : classified_in
+
+    certifications ||--o{ user_certifications : issued_as
+    certifications ||--o{ career_requirements : requires
+
+    career_roles ||--o{ career_goals : aimed_at
+    career_roles ||--o{ career_requirements : establishes
+
+    career_goals ||--o{ career_gap_analyses : analyzes
+    career_goals ||--o{ learning_plans : guides
+
+    career_gap_analyses ||--o{ career_gap_items : details
+
+    gap_types ||--o{ career_gap_items : classifies
+    career_requirements ||--o{ career_gap_items : defines_gap
+
+    learning_plans ||--o{ learning_plan_items : contains
+    career_gap_items ||--o{ learning_plan_items : resolved_by
+    learning_resources ||--o{ learning_plan_items : recommends
+    learning_resources ||--o{ resource_skills : maps_skill
+
+    assessments ||--o{ assessment_results : scores

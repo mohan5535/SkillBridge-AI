@@ -1,0 +1,19 @@
+flowchart TD
+    Candidate["Candidate / Job Seeker"]
+    Admin["Career Counselor / Admin"]
+    AssessEngine["Assessment & Testing Engine"]
+    ContentProv["Learning Resource Provider"]
+
+    System(("0.0\nSkillBridge AI\nCareer Gap Tracker"))
+
+    Candidate -->|"1. Profile, Skills & Career Goals"| System
+    System -->|"2. Gap Analysis, Readiness %, Learning Plan"| Candidate
+
+    Admin -->|"3. Career Roles, Industry Benchmarks"| System
+    System -->|"4. Cohort Readiness & Executive Reports"| Admin
+
+    AssessEngine -->|"5. Assessment Scores & Pass/Fail Status"| System
+    System -->|"6. Assessment Requests & Verification"| AssessEngine
+
+    ContentProv -->|"7. Learning Modules, Durations & Costs"| System
+    System -->|"8. Resource Mapping Inquiries"| ContentProv

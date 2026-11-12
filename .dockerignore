@@ -1,0 +1,14 @@
+node_modules
+backend/node_modules
+.git
+.planning
+backup_*
+*.dump
+*.bak
+*.pre_task1
+coverage
+logs
+*.log
+.env
+backend/.env
+

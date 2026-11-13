@@ -103,5 +103,21 @@ describe('Auth Service - Cryptographic Engine & Security Rules', () => {
     assert.strictEqual(sanitized.activation_token_hash, undefined, 'activation_token_hash must be stripped');
     assert.strictEqual(sanitized.activation_token_expires_at, undefined, 'activation_token_expires_at must be stripped');
   });
+
+  it('rejects empty or non-string passwords and tokens', async () => {
+    await assert.rejects(() => hashPassword(''), /Password must be a non-empty string/);
+    await assert.rejects(() => hashPassword(null), /Password must be a non-empty string/);
+    await assert.rejects(() => hashPassword(12345), /Password must be a non-empty string/);
+
+    assert.equal(await comparePassword(null, 'hash'), false);
+    assert.equal(await comparePassword('pass', null), false);
+    assert.equal(await comparePassword(123, 'hash'), false);
+    assert.equal(await comparePassword('pass', 123), false);
+
+    assert.throws(() => hashToken(''), /Token must be a non-empty string/);
+    assert.throws(() => hashToken(null), /Token must be a non-empty string/);
+    assert.throws(() => hashToken(12345), /Token must be a non-empty string/);
+  });
 });
+
 

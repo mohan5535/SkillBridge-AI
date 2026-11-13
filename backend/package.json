@@ -10,7 +10,8 @@
     "test": "node --test tests/**/*.test.js",
     "test:unit": "node --test tests/unit/**/*.test.js",
     "test:integration": "node --test tests/integration/**/*.test.js",
-    "test:audit": "node --test tests/integration/zeroMutation.test.js"
+    "test:audit": "node --test tests/integration/zeroMutation.test.js",
+    "test:coverage": "node --test-concurrency=1 --experimental-test-coverage --test-coverage-include=\"src/**/*.js\" --test tests/**/*.test.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

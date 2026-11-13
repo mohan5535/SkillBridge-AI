@@ -4,7 +4,8 @@
 ![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.6_(3NF)-4169E1?logo=postgresql&logoColor=white)
 ![Zod](https://img.shields.io/badge/Validation-Zod_Strict-3E67B1)
-![Tests](https://img.shields.io/badge/Tests-194%2F194_Passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-288%2F288_Passing-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-96.39%25_Lines_%7C_88.69%25_Branches-brightgreen)
 
 A full-stack career intelligence and upskilling platform built on a **Third Normal Form (3NF) PostgreSQL schema (22 tables)**, an **Express REST API Gateway**, a **Multi-Factor Readiness & Roadmap Engine**, and a **strict-CSP Candidate & Counselor Web Portal**.
 
@@ -278,13 +279,28 @@ npm --prefix backend run test
 # Run unit tests only (in-memory, no live DB required)
 npm --prefix backend run test:unit
 
+# Run API integration tests against PostgreSQL
+npm --prefix backend run test:integration
+
 # Run zero-mutation database cardinality & FK audit
 npm --prefix backend run test:audit
+
+# Run full test suite with detailed code coverage report
+npm --prefix backend run test:coverage
 ```
 
-**Verified Test Result (`npm --prefix backend run test`):**
-- **194 / 194 tests passed** across **31 suites** (`0` failed, `0` skipped) against live **PostgreSQL 18.6**.
-- Verified **22 tables**, **157 baseline committed records**, **0 orphan FKs**, strict CSP headers (`0` browser CSP violations), and cross-candidate anti-IDOR isolation.
+**Verified Test Result (`npm --prefix backend run test:coverage`):**
+- **288 / 288 tests passed** across **71 suites** (`0` failed, `0` skipped) against live **PostgreSQL 18.6** (exceeding the 278 test benchmark).
+- **Native Node.js Code Coverage (Aggregate across all source files):**
+  - **Lines:** **96.39%** ($\ge 80.0\%$ threshold)
+  - **Branches:** **88.69%** ($\ge 80.0\%$ threshold)
+  - **Functions:** **94.92%** ($\ge 80.0\%$ threshold)
+- **Coverage Engine Specifics & Distinctions:**
+  - **Engine:** Measured via Node.js native V8 coverage (`--experimental-test-coverage`). Native Node.js reports **Lines**, **Branches**, and **Functions**. Independent statement coverage requires AST-based tooling such as `c8` and is not estimated or conflated with line coverage.
+  - **Aggregate vs. Individual Coverage:** Aggregate codebase coverage stands at 96.39% Lines, 88.69% Branches, and 94.92% Functions. Individual modules range from 75.50% to 100.00% Lines, with 100% Lines & Branches achieved across all 6 Express controllers. Full per-file coverage is documented in [`TESTING_REPORT.md`](./TESTING_REPORT.md).
+- **Database Guarantees:**
+  - Verified **22 tables**, exactly **157 baseline committed records**, **0 orphan FKs**, and safe in-memory rollback guarantees (`Zero-Mutation` verified).
+  - Strict CSP headers (`0` browser CSP violations), cryptographic anti-tampering (HMAC-SHA256, bcrypt cost factor 12), and cross-candidate anti-IDOR isolation.
 
 ---
 

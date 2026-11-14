@@ -104,12 +104,26 @@ export function originValidationMiddleware(req, res, next) {
 
 /**
  * Configure IP Rate Limiting.
+ * Health check endpoints and root ping are exempted so orchestrators (Render, K8s) never hit 429.
  */
 export const rateLimitMiddleware = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
   max: env.RATE_LIMIT_MAX,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => {
+    const path = req.path || '';
+    const origUrl = req.originalUrl || '';
+    return (
+      path === '/health' ||
+      path === '/api/health' ||
+      origUrl === '/health' ||
+      origUrl.startsWith('/health?') ||
+      origUrl === '/api/health' ||
+      origUrl.startsWith('/api/health?') ||
+      path === '/'
+    );
+  },
   handler: (req, res) => {
     return res.status(HTTP_STATUS.TOO_MANY_REQUESTS).json({
       status: 'fail',

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { helmetMiddleware, corsMiddleware, originValidationMiddleware } from '../../src/middleware/security.js';
+import { helmetMiddleware, corsMiddleware, originValidationMiddleware, rateLimitMiddleware } from '../../src/middleware/security.js';
 
 function createMockResponse() {
   const headers = {};
@@ -151,5 +151,32 @@ describe('Security Middleware & HTTP Headers Hardening (In-Memory Unit Test)', (
         resolve();
       });
     });
+  });
+
+  it('rateLimitMiddleware explicitly skips /health, /api/health, and / without throttling', async () => {
+    const healthPaths = ['/health', '/api/health', '/health?verbose=true', '/api/health?probe=1', '/'];
+
+    for (const testPath of healthPaths) {
+      for (let i = 0; i < 20; i++) {
+        let nextCalled = false;
+        const req = {
+          ip: '127.0.0.1',
+          path: testPath.split('?')[0],
+          originalUrl: testPath,
+          headers: {},
+        };
+        const res = createMockResponse();
+
+        await new Promise((resolve) => {
+          rateLimitMiddleware(req, res, () => {
+            nextCalled = true;
+            resolve();
+          });
+        });
+
+        assert.equal(nextCalled, true, `Expected next() to be called for ${testPath} on iteration ${i}`);
+        assert.notEqual(res.statusCode, 429, `Health endpoint ${testPath} must never return 429`);
+      }
+    }
   });
 });

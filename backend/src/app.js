@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { apiRouter } from './routes/index.js';
+import { handleHealthCheck } from './routes/health.routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { NotFoundError } from './errors/NotFoundError.js';
 import { helmetMiddleware, corsMiddleware, rateLimitMiddleware, originValidationMiddleware } from './middleware/security.js';
@@ -61,6 +62,9 @@ export function createApp() {
   app.get('/app', (req, res) => res.redirect('/portal'));
   app.get('/candidate', (req, res) => res.redirect('/portal'));
   app.get('/counselor', (req, res) => res.redirect('/portal'));
+
+  // Dedicated /health check alias for orchestrators pinging /health directly
+  app.get('/health', handleHealthCheck);
 
   // Root welcome ping
   app.get('/', (req, res) => {

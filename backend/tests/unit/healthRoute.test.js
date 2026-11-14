@@ -43,6 +43,7 @@ describe('Health Router Unit Tests', () => {
     assert.equal(resStatus, 200);
     assert.equal(resBody.status, 'success');
     assert.equal(resBody.data.status, 'UP');
+    assert.equal(typeof resBody.data.demo_session_allowed, 'boolean');
     assert.equal(resBody.data.database.sequences_verified, 22);
   });
 

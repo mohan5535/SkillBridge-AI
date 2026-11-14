@@ -130,7 +130,15 @@
     if (!route) return;
 
     // Enforce client-side UX RBAC separation (backed by server-side requireRole)
-    if (route.group === 'counselor' && state.userRole === 'candidate') {
+    if (state.userRole === 'guest') {
+      if (route.group === 'candidate') {
+        showAlert('Please sign in or register to access your Candidate Workspace.', 'info');
+        if (pageId !== 'auth') return navigate('auth');
+      } else if (route.group === 'counselor') {
+        showAlert('Please sign in with a Counselor account to access the Supervisory Portal.', 'info');
+        if (pageId !== 'auth') return navigate('auth');
+      }
+    } else if (route.group === 'counselor' && state.userRole === 'candidate') {
       showAlert('Access Denied (HTTP 403): Supervisory portal is strictly restricted to Counselors and Admins.', 'error');
       return;
     }
@@ -204,19 +212,31 @@
   // --- SESSION & IDENTITY MANAGEMENT ---
   async function syncHealthAndSession() {
     // 1. Live Database Health Check
+    let demoAllowed = true;
     try {
       const health = await apiFetch('/api/health', { silent: true });
       const label = $('dbStatusLabel');
       if (health?.status === 'success' && label) {
-        label.textContent = `PostgreSQL 18.6 (${health.database?.version || 'Live'})`;
+        label.textContent = `PostgreSQL 18.6 (${health.data?.database?.engine || 'Live'})`;
+      }
+      if (health?.data && typeof health.data.demo_session_allowed === 'boolean') {
+        demoAllowed = health.data.demo_session_allowed;
       }
     } catch {
       const label = $('dbStatusLabel');
       if (label) label.textContent = 'DB Connecting...';
     }
 
-    // 2. Populate Default Session Switcher Options
-    populateSessionSwitcherOptions();
+    // Toggle demo persona switcher box visibility based on environment configuration
+    const personaBox = document.querySelector('.persona-switcher-box');
+    if (personaBox) {
+      personaBox.style.display = demoAllowed ? '' : 'none';
+    }
+
+    // 2. Populate Default Session Switcher Options if allowed
+    if (demoAllowed) {
+      populateSessionSwitcherOptions();
+    }
 
     // 3. Check if already signed in
     try {
@@ -322,6 +342,7 @@
       const sessionRes = await apiFetch('/api/auth/demo-session', {
         method: 'POST',
         body: JSON.stringify({ persona: personaKey }),
+        silent: true,
       });
 
       const user = sessionRes?.data?.user;
@@ -340,7 +361,13 @@
 
       showAlert(`Session switched to ${user.full_name} (${state.userRole.toUpperCase()})`, 'success');
     } catch (err) {
-      console.error('Failed to switch persona:', err);
+      console.warn('Persona switching unavailable:', err.message);
+      if (err.message && err.message.includes('disabled in production')) {
+        showAlert('Demo persona switching is disabled in production. Please sign in or register with your credentials.', 'info');
+        navigate('auth');
+      } else {
+        showAlert(`Unable to switch session: ${err.message}`, 'error');
+      }
     }
   }
 
@@ -945,13 +972,17 @@
     }
     if (!targetId) targetId = 1;
 
-    // Note: Counselor has permission via requireOwnershipOrCounselor to load any candidate directly OR switch persona
+    // Note: Counselor has permission via requireOwnershipOrCounselor to load any candidate directly
     if (state.userRole === 'counselor' || state.userRole === 'admin') {
       await loadCandidateData(targetId);
       navigate('candidate-dashboard');
       showAlert(`Inspecting Candidate #${targetId} under Counselor Supervisory Authority`, 'success');
+    } else if (state.userRole === 'candidate') {
+      await loadCandidateData(state.userId);
+      navigate('candidate-dashboard');
     } else {
-      await switchPersona(`candidate-${targetId}`, 'candidate-dashboard');
+      showAlert('Please sign in to inspect candidate profiles.', 'info');
+      navigate('auth');
     }
   }
 
@@ -1148,14 +1179,24 @@
         const targetPage = el.dataset.nav;
         const route = ROUTES[targetPage];
 
-        // If user clicks a Candidate page without an active candidate/counselor session yet, initialize candidate session cleanly
-        if (route?.group === 'candidate' && state.userRole === 'guest') {
-          await switchPersona('candidate-1', targetPage);
-          return;
+        // Guard unauthenticated guest navigation
+        if (state.userRole === 'guest') {
+          if (route?.group === 'candidate') {
+            showAlert('Please sign in or register to access your Candidate Workspace.', 'info');
+            navigate('auth');
+            return;
+          }
+          if (route?.group === 'counselor') {
+            showAlert('Please sign in with a Counselor account to access the Supervisory Portal.', 'info');
+            navigate('auth');
+            return;
+          }
         }
-        // If user clicks Counselor page while guest or candidate, switch/show RBAC or counselor prompt
-        if (route?.group === 'counselor' && state.userRole === 'guest') {
-          await switchPersona('counselor', targetPage);
+
+        // Guard cross-role navigation (candidate accessing counselor route)
+        if (route?.group === 'counselor' && state.userRole === 'candidate') {
+          showAlert('Access Denied (HTTP 403): Supervisory portal is strictly restricted to Counselors and Admins.', 'error');
+          navigate('candidate-dashboard');
           return;
         }
 
@@ -1164,8 +1205,27 @@
     });
 
     // 3. Landing Page Quick CTAs
-    $('btnLandingCandidate')?.addEventListener('click', () => switchPersona('candidate-1', 'candidate-dashboard'));
-    $('btnLandingCounselor')?.addEventListener('click', () => switchPersona('counselor', 'counselor-dashboard'));
+    $('btnLandingCandidate')?.addEventListener('click', () => {
+      if (state.userRole === 'candidate' || state.userRole === 'counselor' || state.userRole === 'admin') {
+        navigate('candidate-dashboard');
+      } else {
+        showAlert('Please sign in or register to access your Candidate Workspace.', 'info');
+        navigate('auth');
+      }
+    });
+
+    $('btnLandingCounselor')?.addEventListener('click', () => {
+      if (state.userRole === 'counselor' || state.userRole === 'admin') {
+        navigate('counselor-dashboard');
+      } else if (state.userRole === 'candidate') {
+        showAlert('Access Denied: Counselor/Recruiter privileges required.', 'error');
+        navigate('candidate-dashboard');
+      } else {
+        showAlert('Please sign in with a Counselor account to access the Supervisory Portal.', 'info');
+        navigate('auth');
+      }
+    });
+
     $('btnLandingAuth')?.addEventListener('click', () => navigate('auth'));
 
     // 4. Top Command Bar Actions
@@ -1547,10 +1607,9 @@
     const hashPage = window.location.hash ? window.location.hash.replace('#', '') : '';
 
     if (hashPage && ROUTES[hashPage]) {
-      if (!hasSession && ROUTES[hashPage].group === 'counselor') {
-        await switchPersona('counselor', hashPage);
-      } else if (!hasSession && ROUTES[hashPage].group === 'candidate') {
-        await switchPersona('candidate-1', hashPage);
+      if (!hasSession && (ROUTES[hashPage].group === 'counselor' || ROUTES[hashPage].group === 'candidate')) {
+        showAlert('Please sign in or register to access this workspace.', 'info');
+        navigate('auth');
       } else {
         navigate(hashPage);
       }

@@ -213,7 +213,8 @@ Copy `backend/.env.example` to `backend/.env`:
 | `NODE_ENV` | Runtime mode (`development` or `production`) | `development` |
 | `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER` | PostgreSQL connection coordinates | `127.0.0.1`, `5432`, `skillbridge_db`, `postgres` |
 | `PGPASSWORD` | PostgreSQL password (required in production) | *(local secret)* |
-| `PGSSL`, `PGSSL_REJECT_UNAUTHORIZED` | Enable TLS for managed PostgreSQL | `false`, `true` |
+| `PGSSL`, `PGSSL_REJECT_UNAUTHORIZED` | Enable TLS for managed PostgreSQL (set `PGSSL=false` for Render internal private network) | `false`, `true` |
+| `AUTO_INIT_DB` | Safe zero-loss database schema initialization on startup if empty | `true` |
 | `CORS_ORIGIN` | Allowed origins (comma-separated in production) | `http://localhost:3000` |
 | `RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX` | Express rate-limit window & request cap | `900000`, `100` |
 | `JWT_SECRET`, `JWT_EXPIRES_IN` | `>=32`-char signing key & JWT lifetime | *(CSPRNG hex)*, `30m` |

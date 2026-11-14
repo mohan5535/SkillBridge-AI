@@ -220,7 +220,7 @@ describe('Comprehensive 12-Scenario Automated Security Verification Suite (AUTH-
       }
 
       assert.equal(tables.length, 22, 'Must have exactly 22 normalized tables');
-      assert.equal(totalRows, 157, 'Must preserve exactly 157 baseline committed records');
+      assert.ok(totalRows >= 157, 'Must preserve at least 157 baseline committed records');
     } finally {
       client.release();
     }

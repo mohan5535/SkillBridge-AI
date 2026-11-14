@@ -81,8 +81,11 @@ export function originValidationMiddleware(req, res, next) {
 
     const hostHeader = req.headers?.host;
     if (hostHeader) {
-      const protocol = req.protocol || 'http';
+      const forwardedProto = req.headers['x-forwarded-proto'];
+      const protocol = forwardedProto ? String(forwardedProto).split(',')[0].trim() : (req.protocol || 'http');
       allowedOrigins.add(`${protocol}://${hostHeader}`);
+      allowedOrigins.add(`https://${hostHeader}`);
+      allowedOrigins.add(`http://${hostHeader}`);
     }
 
     if (!allowedOrigins.has(origin)) {

@@ -3,19 +3,37 @@ import { env } from './env.js';
 
 const { Pool } = pg;
 
+/**
+ * Derives explicit SSL configuration for pg.Pool / pg.Client.
+ * Ensures that if TLS is disabled, `ssl: false` is explicitly passed so that
+ * underlying drivers or environment PGSSLMODE do not attempt unintended TLS negotiation.
+ * When TLS is enabled, strict certificate verification is enforced by default.
+ * @param {object} [envConfig] - Environment configuration object
+ * @returns {boolean|object}
+ */
+export function getDbSslConfig(envConfig = env) {
+  if (!envConfig.PGSSL) {
+    return false;
+  }
+
+  const sslOpts = {
+    rejectUnauthorized: envConfig.PGSSL_REJECT_UNAUTHORIZED !== false,
+  };
+
+  if (envConfig.PGSSL_CA) {
+    sslOpts.ca = envConfig.PGSSL_CA;
+  }
+
+  return sslOpts;
+}
+
 export const pool = new Pool({
   host: env.PGHOST,
   port: env.PGPORT,
   database: env.PGDATABASE,
   user: env.PGUSER,
   password: env.PGPASSWORD,
-  ...(env.PGSSL
-    ? {
-        ssl: {
-          rejectUnauthorized: env.PGSSL_REJECT_UNAUTHORIZED,
-        },
-      }
-    : {}),
+  ssl: getDbSslConfig(env),
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,

@@ -29,6 +29,43 @@ function isWeakOrPlaceholderSecret(value) {
 }
 
 /**
+ * Parses PostgreSQL SSL mode explicitly.
+ * Ensures PGSSL=false or PGSSLMODE=disable explicitly disables TLS in pg.Pool,
+ * overriding any implicit or environment-injected defaults.
+ * @param {object} [envVars] - Environment variables object
+ * @returns {boolean}
+ */
+export function parsePgSsl(envVars = process.env) {
+  if (envVars.PGSSL === 'false') {
+    return false;
+  }
+  if (envVars.PGSSL === 'true') {
+    return true;
+  }
+  if (envVars.PGSSLMODE === 'disable') {
+    return false;
+  }
+  if (['require', 'verify-ca', 'verify-full'].includes(envVars.PGSSLMODE)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Parses whether SSL certificate verification should be enforced.
+ * Defaults strictly to true (rejectUnauthorized: true) when TLS is active.
+ * Never silently turns off certificate validation.
+ * @param {object} [envVars] - Environment variables object
+ * @returns {boolean}
+ */
+export function parsePgSslRejectUnauthorized(envVars = process.env) {
+  if (envVars.PGSSL_REJECT_UNAUTHORIZED === 'false' || envVars.PGSSLMODE === 'no-verify') {
+    return false;
+  }
+  return true;
+}
+
+/**
  * Validates mandatory production environment security invariants.
  * Fails fast on missing/weak signing secrets or missing DB credentials in NODE_ENV=production.
  */
@@ -47,8 +84,26 @@ export function validateProductionEnv(config = env) {
   if (isWeakOrPlaceholderSecret(config.COOKIE_SECRET)) {
     errors.push('COOKIE_SECRET must be at least 32 characters and must not use a dev/placeholder value in production.');
   }
-  if (!config.PGPASSWORD || String(config.PGPASSWORD).trim().length === 0) {
+  const host = config.PGHOST !== undefined ? config.PGHOST : env.PGHOST;
+  const database = config.PGDATABASE !== undefined ? config.PGDATABASE : env.PGDATABASE;
+  const user = config.PGUSER !== undefined ? config.PGUSER : env.PGUSER;
+  const port = config.PGPORT !== undefined ? config.PGPORT : env.PGPORT;
+  const password = config.PGPASSWORD !== undefined ? config.PGPASSWORD : env.PGPASSWORD;
+
+  if (!host || String(host).trim().length === 0) {
+    errors.push('PGHOST must be configured when NODE_ENV=production.');
+  }
+  if (!database || String(database).trim().length === 0) {
+    errors.push('PGDATABASE must be configured when NODE_ENV=production.');
+  }
+  if (!user || String(user).trim().length === 0) {
+    errors.push('PGUSER must be configured when NODE_ENV=production.');
+  }
+  if (!password || String(password).trim().length === 0) {
     errors.push('PGPASSWORD must be configured when NODE_ENV=production.');
+  }
+  if (!port || isNaN(port) || Number(port) <= 0 || Number(port) > 65535) {
+    errors.push('PGPORT must be a valid port number (1-65535) when NODE_ENV=production.');
   }
 
   if (errors.length > 0) {
@@ -66,8 +121,10 @@ export const env = {
   PGDATABASE: process.env.PGDATABASE || 'skillbridge_db',
   PGUSER: process.env.PGUSER || 'postgres',
   PGPASSWORD: process.env.PGPASSWORD || '',
-  PGSSL: process.env.PGSSL === 'true' || process.env.PGSSLMODE === 'require',
-  PGSSL_REJECT_UNAUTHORIZED: process.env.PGSSL_REJECT_UNAUTHORIZED !== 'false',
+  PGSSL: parsePgSsl(process.env),
+  PGSSL_REJECT_UNAUTHORIZED: parsePgSslRejectUnauthorized(process.env),
+  PGSSL_CA: process.env.PGSSL_CA || process.env.PGSSLROOTCERT || null,
+  AUTO_INIT_DB: process.env.AUTO_INIT_DB !== 'false',
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
   RATE_LIMIT_WINDOW_MS: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10),
   RATE_LIMIT_MAX: parseInt(process.env.RATE_LIMIT_MAX || '100', 10),

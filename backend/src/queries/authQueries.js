@@ -221,24 +221,16 @@ export async function findUserByEmail(email) {
   const hasColumns = await checkDbAuthColumns();
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.GET_USER_BY_EMAIL, [email]);
-    return res.rows[0] || null;
+    if (res.rows[0]) {
+      return res.rows[0];
+    }
   }
 
   if (env.NODE_ENV === 'production') {
-    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
+    return null;
   }
 
-  // Fallback to DB base user + in-memory credential store
-  try {
-    const dbRes = await pool.query('SELECT user_id, email, full_name FROM users WHERE email = $1', [email]);
-    if (dbRes.rows.length > 0) {
-      const dbUser = dbRes.rows[0];
-      authCredentialStore.initUser(dbUser.user_id, dbUser.email, dbUser.full_name, 'candidate');
-    }
-  } catch {
-    // Database connection error handling handled by caller
-  }
-
+  // Fallback to in-memory credential store in development/test
   const cred = authCredentialStore.getUserByEmail(email);
   if (!cred) return null;
 
@@ -297,7 +289,9 @@ export async function findUserByActivationHash(tokenHash) {
   const hasColumns = await checkDbAuthColumns();
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.GET_USER_BY_ACTIVATION_HASH, [tokenHash]);
-    return res.rows[0] || null;
+    if (res.rows[0]) {
+      return res.rows[0];
+    }
   }
 
   if (env.NODE_ENV === 'production') {
@@ -320,7 +314,9 @@ export async function insertCandidate(email, fullName, passwordHash, country = '
   const hasColumns = await checkDbAuthColumns();
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.REGISTER_CANDIDATE, [email, fullName, country, passwordHash]);
-    return res.rows[0];
+    if (res.rows[0]) {
+      return res.rows[0];
+    }
   }
 
   if (env.NODE_ENV === 'production') {
@@ -341,7 +337,9 @@ export async function updateUserPassword(userId, passwordHash) {
   const hasColumns = await checkDbAuthColumns();
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.ACTIVATE_USER_PASSWORD, [passwordHash, userId]);
-    return res.rows[0];
+    if (res.rows[0]) {
+      return res.rows[0];
+    }
   }
 
   if (env.NODE_ENV === 'production') {
@@ -362,7 +360,9 @@ export async function assignActivationToken(email, tokenHash, expiresAt) {
   const hasColumns = await checkDbAuthColumns();
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.SET_ACTIVATION_TOKEN, [tokenHash, expiresAt, email]);
-    return res.rows[0];
+    if (res.rows[0]) {
+      return res.rows[0];
+    }
   }
 
   if (env.NODE_ENV === 'production') {

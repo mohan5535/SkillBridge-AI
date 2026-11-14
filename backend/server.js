@@ -2,6 +2,7 @@ import { app } from './src/app.js';
 import { env } from './src/config/env.js';
 import { closePool } from './src/config/db.js';
 import { checkDbAuthColumns } from './src/queries/authQueries.js';
+import { ensureDatabaseInitialized } from './src/database/initDb.js';
 
 let server;
 
@@ -38,6 +39,12 @@ async function startServer() {
   if (env.NODE_ENV === 'production') {
     try {
       console.log('[STARTUP] Verifying production PostgreSQL connection and authentication schema...');
+      console.log(`[STARTUP] Target DB: ${env.PGUSER}@${env.PGHOST}:${env.PGPORT}/${env.PGDATABASE} (SSL: ${env.PGSSL ? 'enabled' : 'disabled'})`);
+
+      if (env.AUTO_INIT_DB) {
+        await ensureDatabaseInitialized();
+      }
+
       await checkDbAuthColumns();
       console.log('[STARTUP] PostgreSQL authentication schema verified (Migration 002 active).');
     } catch (err) {

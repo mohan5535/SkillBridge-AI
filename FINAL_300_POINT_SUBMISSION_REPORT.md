@@ -19,7 +19,7 @@ This milestone establishes **SkillBridge AI** as a production-grade, secure, aut
 2. **Production Authentication Hardening:** `backend/src/queries/authQueries.js` enforces strict fail-fast behavior in `production`. In-memory credential fallback is strictly forbidden and throws `DatabaseError`. Transient introspection failures in development/testing do not permanently cache `false`.
 3. **Cryptographic Security:** Passwords are hashed with `bcrypt` (cost factor 12) enforcing a 72-byte cryptographic limit. Plaintext passwords are never stored or logged. JWT sessions use 30-minute expiration inside `HttpOnly`, `SameSite=Strict` cookies. CSRF is defended by HMAC-signed double-submit tokens bound to authenticated sessions.
 4. **Relational Data Integrity:** All 22 tables exist in Third Normal Form (3NF). Baseline demonstration candidate profiles (Priya Sharma, Mohan Mandal, Ananya Desai) remain preserved without password activation. All 32 foreign-key constraints report 0 orphan records.
-5. **Automated Testing & Coverage:** 175 passing unit tests across 53 test suites with **96.31% line coverage**, **88.67% branch coverage**, and **94.95% function coverage** (all exceeding the $\ge 80\%$ benchmark).
+5. **Automated Testing & Coverage:** 177 passing unit tests across 53 test suites with **96.35% line coverage**, **88.81% branch coverage**, and **94.95% function coverage** (all exceeding the $\ge 80\%$ benchmark).
 6. **Container & Deployment Architecture:** `docker-compose.yml` is hardened to automatically mount and execute Migration 002 on fresh container initialization with persistent `pgdata` volume storage.
 
 ---
@@ -90,16 +90,16 @@ This milestone establishes **SkillBridge AI** as a production-grade, secure, aut
 ### Test Execution Summary
 ```
 Command: npm --prefix backend run test:unit
-Result: 175 passing tests across 53 test suites (0 failed, 0 skipped, 0 cancelled)
-Duration: 5.14 seconds
+Result: 177 passing tests across 53 test suites (0 failed, 0 skipped, 0 cancelled)
+Duration: 4.89 seconds
 ```
 
 ### Verified Code Coverage (Native Node.js V8 Engine)
 
 | Metric | Measured Result | Benchmark Required | Verdict |
 | :--- | :---: | :---: | :---: |
-| **Line Coverage** | **96.31%** | $\ge 80.0\%$ | **PASS** (+16.31%) |
-| **Branch Coverage** | **88.67%** | $\ge 80.0\%$ | **PASS** (+8.67%) |
+| **Line Coverage** | **96.35%** | $\ge 80.0\%$ | **PASS** (+16.35%) |
+| **Branch Coverage** | **88.81%** | $\ge 80.0\%$ | **PASS** (+8.81%) |
 | **Function Coverage** | **94.95%** | $\ge 80.0\%$ | **PASS** (+14.95%) |
 
 ### Per-Module Coverage Highlights
@@ -196,11 +196,12 @@ curl -s -c cookies.txt -X POST "${API_URL}/api/auth/login" \
 ## 6. Git Commit & Repository Status
 
 ### Files Staged & Approved for Milestone Commit:
-- `backend/src/queries/authQueries.js` (Production fail-fast and persistent query routing)
+- `backend/src/queries/authQueries.js` (Production fail-fast and persistent query routing; prevented in-memory store initialization in production)
+- `backend/server.js` (Production startup database verification & fail-fast startup guard)
 - `docker-compose.yml` (Migration 002 auto-initialization on fresh volumes)
 - `.gitignore` (Explicit exclusion of `backups/`)
 - `README.md` (Updated with persistent auth documentation, test commands, and deployment guide)
-- `backend/tests/unit/productionAuthHardening.test.js` (6 automated fail-fast tests)
+- `backend/tests/unit/productionAuthHardening.test.js` (8 automated fail-fast tests including production import & startup guards)
 - `backend/tests/unit/persistentAuthScenarios.test.js` (11 automated auth scenario tests)
 - `FINAL_300_POINT_SUBMISSION_REPORT.md` (Comprehensive milestone submission deliverable)
 
@@ -225,10 +226,11 @@ curl -s -c cookies.txt -X POST "${API_URL}/api/auth/login" \
 2. **Production Authentication Hardening:** Hardened `backend/src/queries/authQueries.js` with fail-fast guards in production; eliminated in-memory fallback; ensured transient DB failures do not cache false permanently.
 3. **Cryptographic Security:** Implemented bcrypt password hashing (cost factor 12), signed JWT sessions in HttpOnly SameSite=Strict cookies, and HMAC-SHA256 session-bound double-submit CSRF protection.
 4. **Candidate & Counselor Web Portal:** Built a 12-page responsive SPA portal (/portal) with strict CSP (zero unsafe-inline), real-time session restoration, candidate self-registration, and counselor supervisory directory.
-5. **Automated Testing Suite:** 175 passing unit tests across 53 suites with independently measured native Node.js coverage:
-   - Lines: 96.31%
-   - Branches: 88.67%
+5. **Automated Testing Suite:** 177 passing unit tests across 53 suites with independently measured native Node.js coverage:
+   - Lines: 96.35%
+   - Branches: 88.81%
    - Functions: 94.95%
 6. **Container & Deployment Architecture:** Production multi-stage Dockerfile and docker-compose.yml with persistent pgdata volume storage and Migration 002 auto-execution on database initialization.
 7. **Zero-Mutation Database Invariants:** Preserved all 22 Third Normal Form relational tables and baseline records with 0 orphan foreign keys.
 ```
+

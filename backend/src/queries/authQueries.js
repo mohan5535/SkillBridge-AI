@@ -171,13 +171,15 @@ class AuthCredentialStore {
 
 export const authCredentialStore = new AuthCredentialStore();
 
-// Pre-initialize Priya Sharma, Rahul Verma, Ananya Desai as unactivated candidates
-authCredentialStore.initUser(1, 'priya.sharma@email.com', 'Priya Sharma', 'candidate');
-authCredentialStore.initUser(2, 'rahul.verma@email.com', 'Rahul Verma', 'candidate');
-authCredentialStore.initUser(3, 'ananya.desai@email.com', 'Ananya Desai', 'candidate');
-authCredentialStore.initUser(1, 'priya.sharma@example.com', 'Priya Sharma', 'candidate');
-authCredentialStore.initUser(2, 'rahul.verma@example.com', 'Rahul Verma', 'candidate');
-authCredentialStore.initUser(3, 'ananya.desai@example.com', 'Ananya Desai', 'candidate');
+// Pre-initialize Priya Sharma, Rahul Verma, Ananya Desai as unactivated candidates in non-production
+if (env.NODE_ENV !== 'production') {
+  authCredentialStore.initUser(1, 'priya.sharma@email.com', 'Priya Sharma', 'candidate');
+  authCredentialStore.initUser(2, 'rahul.verma@email.com', 'Rahul Verma', 'candidate');
+  authCredentialStore.initUser(3, 'ananya.desai@email.com', 'Ananya Desai', 'candidate');
+  authCredentialStore.initUser(1, 'priya.sharma@example.com', 'Priya Sharma', 'candidate');
+  authCredentialStore.initUser(2, 'rahul.verma@example.com', 'Rahul Verma', 'candidate');
+  authCredentialStore.initUser(3, 'ananya.desai@example.com', 'Ananya Desai', 'candidate');
+}
 
 /**
  * Asynchronously checks if PostgreSQL users table has password_hash column.

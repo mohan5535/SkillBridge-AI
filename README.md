@@ -319,13 +319,14 @@ docker compose up --build -d
 - Production startup (`NODE_ENV=production`) fails closed if `JWT_SECRET`, `CSRF_SECRET`, `COOKIE_SECRET`, or `PGPASSWORD` are missing or match dev/placeholder strings.
 - JWT signing and verification pin `HS256`; HTTP-only cookies enforce `SameSite=Strict` and `Secure` in production.
 - CSP enforces `script-src 'self'`, `script-src-attr 'none'`, `style-src-attr 'none'`, `object-src 'none'`, and `frame-ancestors 'none'` (zero `'unsafe-inline'`).
-- Note: Staged migration [`migrations/002_add_user_auth_credentials.sql`](./migrations/002_add_user_auth_credentials.sql) must be executed before persistent DB-backed credential login replaces the fallback auth store in fresh production setups.
+- Persistent Authentication: Migration [`migrations/002_add_user_auth_credentials.sql`](./migrations/002_add_user_auth_credentials.sql) is formally executed in PostgreSQL (`users` table updated with `password_hash`, `role`, `activation_token_hash`, and `activation_token_expires_at`). In production (`NODE_ENV=production`), `backend/src/queries/authQueries.js` enforces strict fail-fast behavior with zero in-memory fallback.
+- Docker Compose includes automated Migration 002 initialization via `/docker-entrypoint-initdb.d/03_migration002.sql:ro`.
 
 ---
 
 ## Future Improvements
 
-- Execute Migration `002` in production deployments and wire SMTP/transactional email delivery for activation tokens.
+- Wire SMTP/transactional email delivery for automated activation token delivery.
 - Self-host typography assets under `/portal` to tighten CSP `style-src` and `font-src` exclusively to `'self'`.
 - Capture and commit high-resolution desktop and mobile portal screenshots into `documentation/`.
 

@@ -13,6 +13,7 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
       - ./sample_data.sql:/docker-entrypoint-initdb.d/02_sample_data.sql:ro
+      - ./migrations/002_add_user_auth_credentials.sql:/docker-entrypoint-initdb.d/03_migration002.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${PGUSER:-postgres} -d ${PGDATABASE:-skillbridge_db}"]
       interval: 5s

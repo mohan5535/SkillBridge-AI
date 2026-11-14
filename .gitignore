@@ -18,6 +18,7 @@ backend/node_modules/
 *.bak
 *.pre_task1
 backup_*/
+backups/
 
 # Logs
 logs/

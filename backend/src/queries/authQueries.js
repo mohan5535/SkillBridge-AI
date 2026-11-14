@@ -1,4 +1,6 @@
 import { pool } from '../config/db.js';
+import { env } from '../config/env.js';
+import { DatabaseError } from '../errors/DatabaseError.js';
 
 // SQL Query Constants (Production SQL when Migration 002 is applied)
 export const SQL_QUERIES = {
@@ -56,6 +58,9 @@ class AuthCredentialStore {
 
   // Pre-seed known users from PostgreSQL baseline as unactivated
   initUser(userId, email, fullName, role = 'candidate') {
+    if (env.NODE_ENV === 'production') {
+      throw new DatabaseError('AuthCredentialStore cannot be accessed in production environment.');
+    }
     if (!this.credentials.has(email)) {
       this.credentials.set(email, {
         userId,
@@ -96,6 +101,9 @@ class AuthCredentialStore {
   }
 
   registerCandidate(email, fullName, passwordHash, country = 'India') {
+    if (env.NODE_ENV === 'production') {
+      throw new DatabaseError('AuthCredentialStore cannot be accessed in production environment.');
+    }
     if (this.credentials.has(email)) {
       const err = new Error('User with this email already exists');
       err.code = '23505'; // PostgreSQL unique violation
@@ -176,6 +184,10 @@ authCredentialStore.initUser(3, 'ananya.desai@example.com', 'Ananya Desai', 'can
  */
 let dbHasAuthColumns = null;
 
+export function resetDbAuthColumnsCache() {
+  dbHasAuthColumns = null;
+}
+
 export async function checkDbAuthColumns() {
   if (dbHasAuthColumns !== null) return dbHasAuthColumns;
   try {
@@ -184,11 +196,23 @@ export async function checkDbAuthColumns() {
       FROM information_schema.columns 
       WHERE table_name = 'users' AND column_name = 'password_hash'
     `);
-    dbHasAuthColumns = res.rows.length > 0;
-  } catch {
-    dbHasAuthColumns = false;
+    const hasColumns = res.rows.length > 0;
+    if (env.NODE_ENV === 'production' && !hasColumns) {
+      throw new DatabaseError(
+        'Database authentication schema is missing in production. Migration 002 must be applied to persist credentials.'
+      );
+    }
+    dbHasAuthColumns = hasColumns;
+    return dbHasAuthColumns;
+  } catch (err) {
+    if (env.NODE_ENV === 'production') {
+      throw err instanceof DatabaseError
+        ? err
+        : new DatabaseError(`Failed to introspect database authentication schema: ${err.message}`, err);
+    }
+    // In development / test, do not permanently cache false on query error so retries can succeed
+    return false;
   }
-  return dbHasAuthColumns;
 }
 
 export async function findUserByEmail(email) {
@@ -196,6 +220,10 @@ export async function findUserByEmail(email) {
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.GET_USER_BY_EMAIL, [email]);
     return res.rows[0] || null;
+  }
+
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
   }
 
   // Fallback to DB base user + in-memory credential store
@@ -228,6 +256,10 @@ export async function findUserById(userId) {
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.GET_USER_BY_ID, [userId]);
     return res.rows[0] || null;
+  }
+
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
   }
 
   const cred = authCredentialStore.getUserById(userId);
@@ -266,6 +298,10 @@ export async function findUserByActivationHash(tokenHash) {
     return res.rows[0] || null;
   }
 
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
+  }
+
   const cred = authCredentialStore.getUserByActivationHash(tokenHash);
   if (!cred) return null;
 
@@ -285,6 +321,10 @@ export async function insertCandidate(email, fullName, passwordHash, country = '
     return res.rows[0];
   }
 
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
+  }
+
   const user = authCredentialStore.registerCandidate(email, fullName, passwordHash, country);
   return {
     user_id: user.userId,
@@ -300,6 +340,10 @@ export async function updateUserPassword(userId, passwordHash) {
   if (hasColumns) {
     const res = await pool.query(SQL_QUERIES.ACTIVATE_USER_PASSWORD, [passwordHash, userId]);
     return res.rows[0];
+  }
+
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
   }
 
   const user = authCredentialStore.activatePassword(userId, passwordHash);
@@ -319,6 +363,10 @@ export async function assignActivationToken(email, tokenHash, expiresAt) {
     return res.rows[0];
   }
 
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
+  }
+
   // Ensure user is loaded from DB if exists
   await findUserByEmail(email);
   return authCredentialStore.setActivationToken(email, tokenHash, expiresAt);
@@ -334,6 +382,10 @@ export async function insertCounselor(email, fullName, tokenHash, expiresAt) {
       [email, fullName, tokenHash, expiresAt]
     );
     return res.rows[0];
+  }
+
+  if (env.NODE_ENV === 'production') {
+    throw new DatabaseError('In-memory authentication fallback is strictly prohibited in production.');
   }
 
   const user = authCredentialStore.provisionCounselor(email, fullName, tokenHash, expiresAt);

@@ -2,12 +2,17 @@ import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import request from 'supertest';
 import { app } from '../../src/app.js';
 import { closePool } from '../../src/config/db.js';
 import { HTTP_STATUS } from '../../src/constants/httpCodes.js';
 import { authService } from '../../src/services/auth.service.js';
 import { generateCsrfToken } from '../../src/middleware/csrf.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const publicDir = path.resolve(__dirname, '../../public');
 
 async function safeReq(fn) {
   try {
@@ -100,9 +105,9 @@ describe('Candidate & Counselor Frontend Web Portal Integration Tests', () => {
   });
 
   it('Redesign Verification: Serves all 12 SaaS pages with strict CSP compliance and zero hardcoded demo candidates', () => {
-    const html = fs.readFileSync(path.resolve('public/index.html'), 'utf8');
-    const js = fs.readFileSync(path.resolve('public/app.js'), 'utf8');
-    const css = fs.readFileSync(path.resolve('public/styles.css'), 'utf8');
+    const html = fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8');
+    const js = fs.readFileSync(path.join(publicDir, 'app.js'), 'utf8');
+    const css = fs.readFileSync(path.join(publicDir, 'styles.css'), 'utf8');
 
     const expectedPages = [
       'page-landing',
@@ -199,6 +204,20 @@ describe('Candidate & Counselor Frontend Web Portal Integration Tests', () => {
         .send('--test--')
     );
     if (uploadRes) assert.equal(uploadRes.status, 415);
+  });
+
+  it('GET /favicon.ico and /portal/favicon.svg should serve valid favicon assets', async () => {
+    const icoRes = await safeReq(() => request(app).get('/favicon.ico'));
+    if (icoRes) {
+      assert.equal(icoRes.status, HTTP_STATUS.OK);
+      assert.match(icoRes.headers['content-type'], /(image\/x-icon|image\/vnd\.microsoft\.icon|application\/octet-stream)/);
+    }
+
+    const svgRes = await safeReq(() => request(app).get('/portal/favicon.svg'));
+    if (svgRes) {
+      assert.equal(svgRes.status, HTTP_STATUS.OK);
+      assert.match(svgRes.headers['content-type'], /image\/svg\+xml/);
+    }
   });
 });
 

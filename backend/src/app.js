@@ -62,6 +62,7 @@ export function createApp() {
   app.get('/app', (req, res) => res.redirect('/portal'));
   app.get('/candidate', (req, res) => res.redirect('/portal'));
   app.get('/counselor', (req, res) => res.redirect('/portal'));
+  app.get('/favicon.ico', (req, res) => res.sendFile(path.join(publicDir, 'favicon.ico')));
 
   // Dedicated /health check alias for orchestrators pinging /health directly
   app.get('/health', handleHealthCheck);

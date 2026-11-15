@@ -177,11 +177,6 @@
       loadAdminData();
     }
 
-    // Activate matching section
-    document.querySelectorAll('.page-view').forEach((sec) => sec.classList.remove('active'));
-    const targetSec = $(`page-${pageId}`);
-    if (targetSec) targetSec.classList.add('active');
-
     // Sync Sidebar links
     document.querySelectorAll('.nav-link').forEach((link) => {
       link.classList.toggle('active', link.dataset.nav === pageId);
@@ -693,7 +688,6 @@
     } catch (err) {
       console.warn('Failed to load admin telemetry:', err.message);
     }
-  }
   }
 
   function updateGaugeVisual(pct, category = 'needs_upskilling') {

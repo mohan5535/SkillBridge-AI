@@ -10,6 +10,7 @@ import { validate } from '../middleware/validate.js';
 import {
   positiveIntParam,
   careerGoalSchema,
+  updateCareerGoalSchema,
   createGapAnalysisSchema,
   emptyBodySchema,
 } from '../validators/schemas.js';
@@ -24,6 +25,9 @@ const requireAnalysisOwnership = requireResourceOwnershipOrCounselor('analysis',
 // Goal management & skill matching
 goalRouter.get('/users/:id/goals', authenticateToken, validateUserId, requireOwnershipOrCounselor('id'), goalController.getGoalsByUserId);
 goalRouter.post('/users/:id/goals', authenticateToken, validateUserId, requireOwnershipOrCounselor('id'), csrfProtection, validate(careerGoalSchema), goalController.createGoal);
+goalRouter.get('/goals/:goalId', authenticateToken, validateGoalId, requireGoalOwnership, goalController.getGoalById);
+goalRouter.put('/goals/:goalId', authenticateToken, validateGoalId, requireGoalOwnership, csrfProtection, validate(updateCareerGoalSchema), goalController.updateGoal);
+goalRouter.delete('/goals/:goalId', authenticateToken, validateGoalId, requireGoalOwnership, csrfProtection, goalController.deleteGoal);
 goalRouter.get('/goals/:goalId/skill-match', authenticateToken, validateGoalId, requireGoalOwnership, goalController.getSkillMatch);
 goalRouter.post('/goals/:goalId/analyses', authenticateToken, validateGoalId, requireGoalOwnership, csrfProtection, validate(createGapAnalysisSchema), goalController.createGapAnalysis);
 

@@ -42,15 +42,37 @@ export const GAP_QUERIES = {
       cg.role_id AS target_role_id,
       cg.role_id,
       cr.role_title,
+      cf.field_name,
       cg.target_date AS target_completion_date,
       cg.target_date,
       cg.priority,
       cg.status,
-      cg.notes
+      cg.notes,
+      cg.created_at,
+      cg.updated_at
     FROM career_goals cg
     JOIN users u ON cg.user_id = u.user_id
     JOIN career_roles cr ON cg.role_id = cr.role_id
+    LEFT JOIN career_fields cf ON cr.field_id = cf.field_id
     WHERE cg.goal_id = $1;
+  `,
+
+  UPDATE_GOAL: `
+    UPDATE career_goals
+    SET
+      priority = COALESCE($2, priority),
+      target_date = COALESCE($3, target_date),
+      status = COALESCE($4, status),
+      notes = COALESCE($5, notes),
+      updated_at = NOW()
+    WHERE goal_id = $1
+    RETURNING *;
+  `,
+
+  DELETE_GOAL: `
+    DELETE FROM career_goals
+    WHERE goal_id = $1
+    RETURNING goal_id, user_id, role_id;
   `,
 
   // Query 8: Skills Comparison vs Target Role Requirements (Python MET, React NOT MET, SQL MET)

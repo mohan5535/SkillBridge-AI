@@ -197,6 +197,17 @@ export const careerGoalSchema = z
   })
   .strict('Unexpected fields detected on career goal payload');
 
+// 7a. Update Career Goal Schema
+export const updateCareerGoalSchema = z
+  .object({
+    priority: z.number().int().min(1).max(5).optional(),
+    target_date: isoDateSchema.optional().nullable(),
+    target_completion_date: isoDateSchema.optional().nullable(),
+    status: z.enum(CAREER_GOAL_STATUS).optional(),
+    notes: safeString(z.string().trim().max(2000)).optional().nullable(),
+  })
+  .strict('Unexpected fields detected on career goal update payload');
+
 // 7b. Gap Analysis Snapshot Schema (Aligned to PostgreSQL `career_gap_analyses`)
 export const createGapAnalysisSchema = z
   .object({

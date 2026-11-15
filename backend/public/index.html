@@ -36,9 +36,33 @@
               </a>
             </li>
             <li>
+              <a class="nav-link" data-nav="about">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                About &amp; Methodology
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="features">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                Platform Capabilities
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="contact">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Contact &amp; Support
+              </a>
+            </li>
+            <li>
               <a class="nav-link" data-nav="auth">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Sign In &amp; Access
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="catalog">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Role Catalog Explorer
               </a>
             </li>
           </ul>
@@ -58,6 +82,13 @@
               <a class="nav-link" data-nav="candidate-profile">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 Candidate Profile
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" data-nav="career-goals">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                Career Goals
+                <span class="nav-badge-pill pill-indigo">CRUD</span>
               </a>
             </li>
             <li>
@@ -117,17 +148,11 @@
                 Executive Analytics
               </a>
             </li>
-          </ul>
-        </div>
-
-        <!-- Group: Industry Standards -->
-        <div>
-          <div class="nav-group-label">Industry Taxonomy</div>
-          <ul class="nav-list">
             <li>
-              <a class="nav-link" data-nav="catalog">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                Role Catalog Explorer
+              <a class="nav-link" data-nav="admin-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Admin Diagnostics
+                <span class="nav-badge-pill pill-indigo">Admin</span>
               </a>
             </li>
           </ul>
@@ -208,6 +233,81 @@
               <button class="btn btn-outline btn-lg" id="btnLandingAuth">Sign In / Register</button>
             </div>
 
+            <!-- Live Platform Telemetry Strip -->
+            <div class="landing-metrics-strip">
+              <div class="metric-strip-card">
+                <span class="metric-strip-val">157</span>
+                <span class="metric-strip-label">Baseline Records</span>
+                <span class="metric-strip-sub">Preserved in PostgreSQL 18.6</span>
+              </div>
+              <div class="metric-strip-card">
+                <span class="metric-strip-val">22</span>
+                <span class="metric-strip-label">Relational Tables</span>
+                <span class="metric-strip-sub">Zero-mutation schema integrity</span>
+              </div>
+              <div class="metric-strip-card">
+                <span class="metric-strip-val">15</span>
+                <span class="metric-strip-label">Analytical Queries</span>
+                <span class="metric-strip-sub">Sub-15ms multi-CTE performance</span>
+              </div>
+              <div class="metric-strip-card">
+                <span class="metric-strip-val">0</span>
+                <span class="metric-strip-label">Mock Fallbacks</span>
+                <span class="metric-strip-sub">Fail-fast production persistence</span>
+              </div>
+            </div>
+
+            <!-- 3-Step Systematic Workflow -->
+            <div class="workflow-section">
+              <div class="section-header-center">
+                <span class="section-eyebrow">How SkillBridge AI Operates</span>
+                <h2 class="section-heading">Systematic Career Recovery &amp; Readiness Verification</h2>
+                <p class="section-subtext">
+                  Transition from career hiatus to industry placement with objective, mathematically backed milestone tracking.
+                </p>
+              </div>
+
+              <div class="workflow-steps-grid">
+                <div class="workflow-step-card">
+                  <div class="workflow-step-num">1</div>
+                  <h3 class="workflow-step-title">Ingest &amp; Normalize Breaks</h3>
+                  <p class="workflow-step-desc">
+                    Record caregiving, medical, education, or personal career breaks without bias. Historical tenure is preserved while recent upskilling is weighted.
+                  </p>
+                </div>
+                <div class="workflow-step-card">
+                  <div class="workflow-step-num">2</div>
+                  <h3 class="workflow-step-title">Multi-Factor Readiness Audit</h3>
+                  <p class="workflow-step-desc">
+                    Calculate career readiness across Skills (40%), Experience (20%), Education (20%), Certifications (10%), and Verified Assessments (10%).
+                  </p>
+                </div>
+                <div class="workflow-step-card">
+                  <div class="workflow-step-num">3</div>
+                  <h3 class="workflow-step-title">Execute Sequenced Roadmap</h3>
+                  <p class="workflow-step-desc">
+                    Curated learning modules ordered by dependency constraints and gap severity guide candidates through verifiable, real-world skill acquisition.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Supported Career Sectors -->
+            <div class="mb-4">
+              <div class="section-header-center">
+                <span class="section-eyebrow">Industry Taxonomy</span>
+                <h3 class="section-heading">Supported High-Growth Sectors</h3>
+              </div>
+              <div class="sectors-grid">
+                <div class="sector-chip"><span class="sector-chip-dot"></span> Cloud Architecture &amp; DevOps</div>
+                <div class="sector-chip"><span class="sector-chip-dot"></span> Full-Stack Web Engineering</div>
+                <div class="sector-chip"><span class="sector-chip-dot"></span> Data Science &amp; Machine Learning</div>
+                <div class="sector-chip"><span class="sector-chip-dot"></span> Cyber Security &amp; Compliance</div>
+                <div class="sector-chip"><span class="sector-chip-dot"></span> Site Reliability &amp; Platforms</div>
+              </div>
+            </div>
+
+            <!-- 3 Core Architectural Pillars -->
             <div class="feature-grid-3">
               <div class="feature-box">
                 <div class="feature-icon-box">
@@ -235,6 +335,323 @@
                 <p class="feature-desc">
                   Sub-15ms multi-CTE executive cohort dashboards guarded by strict JWT cookies, session-bound CSRF tokens, and RBAC isolation.
                 </p>
+              </div>
+            </div>
+
+            <!-- Architecture & Compliance Verification Badges -->
+            <div class="arch-badges-row">
+              <div class="arch-badge-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                PostgreSQL 18.6 ACID
+              </div>
+              <div class="arch-badge-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Bcrypt Cost 12 &amp; JWT
+              </div>
+              <div class="arch-badge-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                Double-Submit CSRF HMAC
+              </div>
+              <div class="arch-badge-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Strict CSP (No Inline Scripts)
+              </div>
+              <div class="arch-badge-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                OWASP Level 2 Aligned
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- PUBLIC PAGE: ABOUT & METHODOLOGY -->
+        <!-- ================================================================ -->
+        <section id="page-about" class="page-view">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">About SkillBridge AI</h1>
+              <p class="page-subtitle">Universal Career Gap Intelligence, Objective Re-Entry Science &amp; Platform Mission</p>
+            </div>
+          </div>
+
+          <div class="about-hero-box">
+            <span class="section-eyebrow">Our Mission</span>
+            <h2 class="section-heading">Eliminating Career Break Penalty Through Verified Skill Science</h2>
+            <p class="section-subtext">
+              Millions of qualified professionals step away from the workforce each year due to caregiving, medical recovery,
+              parental responsibilities, or educational pursuits. Traditional applicant tracking systems unfairly penalize chronological
+              employment gaps, discarding seasoned talent. SkillBridge AI introduces a mathematical, evidence-grounded framework to
+              audit transferable competencies, quantify actual readiness, and curate fast-track learning sequences to bridge validated gaps.
+            </p>
+          </div>
+
+          <div class="about-grid-2">
+            <div class="card-panel">
+              <h3 class="panel-title mb-2">The Career Gap Problem</h3>
+              <p class="text-secondary text-sm-body mb-3">
+                Employment hiatuses are frequently mischaracterized as skill depreciation. In reality, modern professionals in transition
+                frequently acquire advanced management, technical, or domain capabilities during career intervals.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Chronological resume filters reject qualified candidates automatically</li>
+                <li>Zero distinction made between skill decay and transferable competency</li>
+                <li>Lack of structured roadmaps for targeted upskilling</li>
+                <li>Counselors and recruiters lack verified cohort analytics</li>
+              </ul>
+            </div>
+
+            <div class="card-panel">
+              <h3 class="panel-title mb-2">The SkillBridge Solution</h3>
+              <p class="text-secondary text-sm-body mb-3">
+                SkillBridge AI replaces resume keyword guessing with multi-factor relational telemetry.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Standardized, neutral career break logging under FR-02 protocol</li>
+                <li>Mathematical 5-factor weighted career readiness scoring</li>
+                <li>Query 8 exact skills comparison against industry role taxonomies</li>
+                <li>Graph-sequenced learning plans with verified assessment gates</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 class="panel-title mb-3">Enterprise Architectural Pillars</h3>
+          <div class="architecture-pillars-grid">
+            <div class="pillar-card">
+              <div class="pillar-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              </div>
+              <h4 class="pillar-title">PostgreSQL 18.6</h4>
+              <p class="pillar-desc">22 relational tables with foreign key cascades, unique user-role constraints, and ACID transactions.</p>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+              </div>
+              <h4 class="pillar-title">Node 24 ESM API</h4>
+              <p class="pillar-desc">Express REST gateway with strict Zod schema validation, fail-fast database pool, and JSend envelopes.</p>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <h4 class="pillar-title">Zero-Trust RBAC</h4>
+              <p class="pillar-desc">Strict horizontal candidate isolation, IDOR prevention, and supervisor privilege separation.</p>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+              </div>
+              <h4 class="pillar-title">Sub-15ms Analytics</h4>
+              <p class="pillar-desc">Query 1-15 executive analytics powered by isolated CTEs avoiding Cartesian products.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- PUBLIC PAGE: FEATURES & CAPABILITIES -->
+        <!-- ================================================================ -->
+        <section id="page-features" class="page-view">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Platform Capabilities &amp; Feature Matrix</h1>
+              <p class="page-subtitle">Comprehensive tooling for candidates, career counselors, and enterprise administrators</p>
+            </div>
+          </div>
+
+          <div class="features-deep-grid">
+            <div class="feature-deep-card">
+              <div class="feature-deep-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+              </div>
+              <h3 class="feature-deep-title">Multi-Factor Skill Gap Engine</h3>
+              <p class="feature-deep-desc">
+                Calculates exact match status (MET vs NOT MET) for candidate skills vs industry requirements (Query 8) with severity ratings.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Automated gap severity (Critical, High, Medium, Low)</li>
+                <li>Polymorphic role requirement resolution (Query 5)</li>
+                <li>Dynamic target role switching</li>
+              </ul>
+            </div>
+
+            <div class="feature-deep-card">
+              <div class="feature-deep-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <h3 class="feature-deep-title">Career Break Normalization</h3>
+              <p class="feature-deep-desc">
+                Neutral, non-punitive intake protocol (FR-02) documenting career hiatuses without subjective bias or negative scoring.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Caregiving, health, education, transition, layoff</li>
+                <li>Duration tracking correlated to readiness</li>
+                <li>Preserves historical seniority and domain depth</li>
+              </ul>
+            </div>
+
+            <div class="feature-deep-card">
+              <div class="feature-deep-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+              </div>
+              <h3 class="feature-deep-title">Sequenced Learning Roadmaps</h3>
+              <p class="feature-deep-desc">
+                Generates personalized learning modules from catalog resources, sequenced by dependency order and gap priority.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Automated milestone generation (Query 10)</li>
+                <li>Estimated hours and completion tracking</li>
+                <li>Direct links to catalog documentation and courses</li>
+              </ul>
+            </div>
+
+            <div class="feature-deep-card">
+              <div class="feature-deep-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <h3 class="feature-deep-title">Counselor Executive Analytics</h3>
+              <p class="feature-deep-desc">
+                Real-time cohort visibility for counselors and recruiters utilizing sub-15ms multi-CTE PostgreSQL architectures.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Cohort readiness overview (Query 15)</li>
+                <li>At-risk candidate detection &lt; 60% (Query 7)</li>
+                <li>Roadmap completion velocity auditing (Query 11)</li>
+              </ul>
+            </div>
+
+            <div class="feature-deep-card">
+              <div class="feature-deep-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <h3 class="feature-deep-title">Career Goals CRUD Management</h3>
+              <p class="feature-deep-desc">
+                Full database-backed Create, Read, Update, and Delete capabilities for candidate career targets with PostgreSQL ACID safety.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Persistent storage in career_goals table</li>
+                <li>Priority ranking and target completion dates</li>
+                <li>Ownership validation and cross-candidate protection</li>
+              </ul>
+            </div>
+
+            <div class="feature-deep-card">
+              <div class="feature-deep-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <h3 class="feature-deep-title">Verified Skill Assessments</h3>
+              <p class="feature-deep-desc">
+                Standardized verification tests with score validation, passing thresholds, and longitudinal growth tracking.
+              </p>
+              <ul class="feature-spec-list">
+                <li>Assessment history per candidate (Query 13)</li>
+                <li>Re-test score improvement detection (Query 14)</li>
+                <li>Strict max_score database constraint enforcement</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- PUBLIC PAGE: CONTACT & SUPPORT -->
+        <!-- ================================================================ -->
+        <section id="page-contact" class="page-view">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Contact &amp; Support</h1>
+              <p class="page-subtitle">Get in touch with the SkillBridge engineering team, counselor advisory, or security operations</p>
+            </div>
+          </div>
+
+          <div class="contact-container">
+            <div class="contact-info-panel">
+              <div class="contact-channel-card">
+                <div class="channel-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div>
+                  <h4 class="channel-title">Technical Support</h4>
+                  <p class="channel-desc">Assistance with candidate onboarding, assessment submissions, and API gateway integrations.</p>
+                </div>
+              </div>
+
+              <div class="contact-channel-card">
+                <div class="channel-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                  <h4 class="channel-title">Counselor &amp; Recruiter Advisory</h4>
+                  <p class="channel-desc">Cohort analytics consultation, multi-candidate supervisory access, and industry partnership.</p>
+                </div>
+              </div>
+
+              <div class="contact-channel-card">
+                <div class="channel-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                  <h4 class="channel-title">Security &amp; Vulnerability Disclosure</h4>
+                  <p class="channel-desc">Responsible disclosure for cryptographic tokens, session management, and RBAC boundaries.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-panel">
+              <div id="contactFormWrapper">
+                <h3 class="panel-title mb-2">Send an Inquiry</h3>
+                <p class="text-secondary text-sm-body mb-4">Submit your details and our technical team will respond within 24 business hours.</p>
+
+                <div id="contactAlert" class="alert-banner hidden mb-3" role="alert"></div>
+
+                <form id="formContactSupport">
+                  <div class="form-row">
+                    <div class="form-group flex-1">
+                      <label for="contactName">Your Full Name</label>
+                      <input type="text" id="contactName" class="form-input" placeholder="e.g. Vikram Seth" required>
+                    </div>
+                    <div class="form-group flex-1">
+                      <label for="contactEmail">Email Address</label>
+                      <input type="email" id="contactEmail" class="form-input" placeholder="name@domain.com" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group flex-1">
+                      <label for="contactOrg">Organization / College (Optional)</label>
+                      <input type="text" id="contactOrg" class="form-input" placeholder="e.g. Tech Institute / University">
+                    </div>
+                    <div class="form-group flex-1">
+                      <label for="contactCategory">Inquiry Category</label>
+                      <select id="contactCategory" class="form-select" required>
+                        <option value="technical">Technical Support &amp; Integration</option>
+                        <option value="counselor">Counselor Supervisory Portal Access</option>
+                        <option value="candidate">Candidate Account Assistance</option>
+                        <option value="security">Security Vulnerability Report</option>
+                        <option value="feedback">Product Feedback &amp; Suggestions</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="contactMessage">Message / Request Details</label>
+                    <textarea id="contactMessage" class="form-input" rows="4" placeholder="Describe your question, issue, or feedback..." required></textarea>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-100" id="btnSubmitContact">Submit Inquiry</button>
+                  <p class="form-hint">Inputs are validated on client and backend; strict XSS and HTML sanitization is enforced.</p>
+                </form>
+              </div>
+
+              <div id="contactSuccessCard" class="contact-success-card hidden">
+                <div class="pillar-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3 class="panel-title">Inquiry Successfully Transmitted</h3>
+                <p class="text-secondary text-sm-body">
+                  Your inquiry has been logged in the support dispatcher. Please retain your reference identifier for follow-up communications:
+                </p>
+                <div class="contact-ref-pill" id="contactRefId">REF-SB-00000</div>
+                <button type="button" class="btn btn-outline btn-sm mt-3" id="btnContactReset">Send Another Inquiry</button>
               </div>
             </div>
           </div>
@@ -268,7 +685,12 @@
                   </div>
                   <div class="form-group">
                     <label for="pageLoginPassword">Password</label>
-                    <input type="password" id="pageLoginPassword" class="form-input" placeholder="••••••••••••" required>
+                    <div class="input-password-wrapper">
+                      <input type="password" id="pageLoginPassword" class="form-input" placeholder="••••••••••••" required>
+                      <button type="button" class="btn-toggle-password" data-target-input="pageLoginPassword" aria-label="Toggle password visibility">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
                   </div>
                   <button type="submit" class="btn btn-primary w-100">Sign In to Workspace</button>
                   <p class="form-hint">Protected by brute-force rate limiting (5 attempts / 15 min) and bcrypt cost factor 12.</p>
@@ -287,8 +709,17 @@
                     <input type="email" id="pageRegEmail" class="form-input" placeholder="candidate@example.com" required>
                   </div>
                   <div class="form-group">
-                    <label for="pageRegPassword">Password (Min 8 chars, upper, lower, digit, symbol)</label>
-                    <input type="password" id="pageRegPassword" class="form-input" placeholder="Create strong password" required>
+                    <label for="pageRegPassword">Password</label>
+                    <div class="input-password-wrapper">
+                      <input type="password" id="pageRegPassword" class="form-input" placeholder="Create strong password" required>
+                      <button type="button" class="btn-toggle-password" data-target-input="pageRegPassword" aria-label="Toggle password visibility">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
+                    <div class="password-strength-container">
+                      <div class="progress-track"><div class="progress-bar-fill fill-neutral" id="pageRegPasswordStrength"></div></div>
+                      <span class="scorecard-caption" id="pageRegPasswordLabel">Min 8 chars with uppercase, lowercase, digit, symbol</span>
+                    </div>
                   </div>
                   <div class="form-row">
                     <div class="form-group flex-1">
@@ -314,7 +745,12 @@
                   </div>
                   <div class="form-group">
                     <label for="pageActPassword">Set Password</label>
-                    <input type="password" id="pageActPassword" class="form-input" placeholder="Create permanent password" required>
+                    <div class="input-password-wrapper">
+                      <input type="password" id="pageActPassword" class="form-input" placeholder="Create permanent password" required>
+                      <button type="button" class="btn-toggle-password" data-target-input="pageActPassword" aria-label="Toggle password visibility">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
                   </div>
                   <button type="submit" class="btn btn-primary w-100">Activate Account</button>
                   <p class="form-hint">Validates cryptographic token ownership and clears token after activation (anti-replay).</p>
@@ -472,6 +908,93 @@
                 </div>
               </div>
               <div id="profileCertsList">Loading certifications...</div>
+            </div>
+          </section>
+
+          <!-- PAGE 4B: CAREER GOALS MANAGEMENT (REAL DATABASE-BACKED CRUD) -->
+          <section id="page-career-goals" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Career Goals Management</h1>
+                <p class="page-subtitle">Configure, inspect, update, and manage your target industry roles with persistent PostgreSQL backing</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-outline btn-sm" id="btnRefreshGoals">Refresh Goals</button>
+              </div>
+            </div>
+
+            <!-- Set Target Career Goal Card (CREATE) -->
+            <div class="card-panel mb-4">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Set New Target Career Goal (CREATE)</h3>
+                  <p class="panel-desc">Establishes your target industry role for multi-factor readiness scoring and roadmap generation</p>
+                </div>
+              </div>
+              <form id="formCreateGoal">
+                <div class="form-row">
+                  <div class="form-group flex-1">
+                    <label for="selectGoalRole">Target Industry Role</label>
+                    <select id="selectGoalRole" class="form-select" required>
+                      <option value="" disabled selected>Loading career roles from catalog...</option>
+                    </select>
+                  </div>
+                  <div class="form-group flex-1">
+                    <label for="inputGoalPriority">Priority Level (1 = Top Focus, 5 = Long-term)</label>
+                    <input type="number" id="inputGoalPriority" class="form-input" min="1" max="5" value="1" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group flex-1">
+                    <label for="inputGoalTargetDate">Target Completion Date (Optional)</label>
+                    <input type="date" id="inputGoalTargetDate" class="form-input">
+                  </div>
+                  <div class="form-group flex-1">
+                    <label for="selectGoalStatus">Initial Status</label>
+                    <select id="selectGoalStatus" class="form-select" required>
+                      <option value="exploring">Exploring &bull; Researching Role Requirements</option>
+                      <option value="active" selected>Active &bull; Actively Upskilling</option>
+                      <option value="paused">Paused &bull; On Temporary Hold</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputGoalNotes">Career Transition Strategy &amp; Notes</label>
+                  <textarea id="inputGoalNotes" class="form-input" rows="2" placeholder="e.g. Preparing for cloud certification and backend role transition after sabbatical..."></textarea>
+                </div>
+                <div class="d-flex justify-between align-center">
+                  <p class="form-hint">Persists via <code>POST /api/users/:id/goals</code> with CSRF protection and ownership verification.</p>
+                  <button type="submit" class="btn btn-primary" id="btnSubmitGoal">Set Career Goal</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Active Career Goals Table Card (READ, UPDATE, DELETE) -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Active Career Goals Directory (READ)</h3>
+                  <p class="panel-desc">Grounded in PostgreSQL table <code>career_goals</code> with isolated ownership security</p>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Goal ID</th>
+                      <th>Target Role</th>
+                      <th>Career Field</th>
+                      <th>Priority</th>
+                      <th>Target Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="careerGoalsTableBody">
+                    <tr><td colspan="7" class="loading-cell">Loading career goals from PostgreSQL...</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
 
@@ -899,6 +1422,88 @@
               </div>
             </div>
           </section>
+
+          <!-- PAGE 13: ADMINISTRATOR & SYSTEM DIAGNOSTICS DASHBOARD -->
+          <section id="page-admin-dashboard" class="page-view">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">Administrator &amp; System Diagnostics</h1>
+                <p class="page-subtitle">Live system telemetry, PostgreSQL 18.6 schema statistics, and user directory</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-primary btn-sm" id="btnRefreshAdmin">Refresh Diagnostics</button>
+              </div>
+            </div>
+
+            <!-- System Telemetry Grid -->
+            <div class="admin-telemetry-grid">
+              <div class="admin-kpi-card">
+                <span class="admin-kpi-label">API Health Status</span>
+                <span class="admin-kpi-val text-emerald" id="adminHealthStatus">Operational</span>
+                <span class="admin-kpi-sub">HTTP 200 &bull; Gateway Responsive</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="admin-kpi-label">Database Engine</span>
+                <span class="admin-kpi-val" id="adminDbVersion">PostgreSQL 18.6</span>
+                <span class="admin-kpi-sub">ACID Transacted &bull; SCRAM-SHA-256</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="admin-kpi-label">Relational Tables</span>
+                <span class="admin-kpi-val" id="adminTableCount">22 Tables</span>
+                <span class="admin-kpi-sub">Normalized Schema &bull; Foreign Keys</span>
+              </div>
+              <div class="admin-kpi-card">
+                <span class="admin-kpi-label">Baseline Records</span>
+                <span class="admin-kpi-val" id="adminRecordCount">157 Preserved</span>
+                <span class="admin-kpi-sub">Zero-mutation test guarantee</span>
+              </div>
+            </div>
+
+            <!-- Platform Security Status -->
+            <div class="card-panel mb-4">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Active Security Controls Audit</h3>
+                  <p class="panel-desc">Real-time status of runtime security layers and edge defense</p>
+                </div>
+              </div>
+              <div class="d-flex gap-2 flex-wrap">
+                <span class="badge badge-emerald">Strict Helmet CSP Enforced</span>
+                <span class="badge badge-emerald">Double-Submit CSRF HMAC</span>
+                <span class="badge badge-emerald">Bcrypt Cost Factor 12</span>
+                <span class="badge badge-emerald">HttpOnly SameSite Session Cookies</span>
+                <span class="badge badge-emerald">Brute-Force Rate Limiting Active</span>
+                <span class="badge badge-emerald">Zero-Trust RBAC Domain Isolation</span>
+              </div>
+            </div>
+
+            <!-- Registered User Directory -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <div>
+                  <h3 class="panel-title">Platform User Directory &amp; Roles</h3>
+                  <p class="panel-desc">Grounded in PostgreSQL table <code>users</code> via <code>GET /api/users</code></p>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>User ID</th>
+                      <th>Full Name</th>
+                      <th>Email Address</th>
+                      <th>Assigned Role</th>
+                      <th>Registered</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminUserTableBody">
+                    <tr><td colspan="6" class="loading-cell">Loading platform users from PostgreSQL...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
         </div>
 
         <!-- ================================================================ -->
@@ -1153,6 +1758,93 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: EDIT CAREER GOAL (UPDATE) -->
+  <div id="modalEditGoal" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Career Goal (UPDATE)</h3>
+        <button type="button" class="btn-close" data-close-modal="modalEditGoal">&times;</button>
+      </div>
+      <form id="formEditGoal">
+        <input type="hidden" id="editGoalId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Target Industry Role</label>
+            <div id="editGoalRoleTitle" class="badge badge-indigo text-sm-body mb-2">Role Title</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="editGoalPriority">Priority Level (1-5)</label>
+              <input type="number" id="editGoalPriority" class="form-input" min="1" max="5" required>
+            </div>
+            <div class="form-group flex-1">
+              <label for="editGoalStatus">Goal Status</label>
+              <select id="editGoalStatus" class="form-select" required>
+                <option value="exploring">Exploring</option>
+                <option value="active">Active</option>
+                <option value="achieved">Achieved</option>
+                <option value="paused">Paused</option>
+                <option value="abandoned">Abandoned</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editGoalTargetDate">Target Completion Date</label>
+            <input type="date" id="editGoalTargetDate" class="form-input">
+          </div>
+          <div class="form-group">
+            <label for="editGoalNotes">Strategy / Notes</label>
+            <textarea id="editGoalNotes" class="form-input" rows="3" placeholder="Update goal strategy or progress notes..."></textarea>
+          </div>
+          <p class="form-hint">Persists via <code>PUT /api/goals/:goalId</code> with CSRF validation.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-close-modal="modalEditGoal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveGoal">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 6: DELETE CAREER GOAL CONFIRMATION (DELETE) -->
+  <div id="modalDeleteGoal" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Confirm Goal Deletion (DELETE)</h3>
+        <button type="button" class="btn-close" data-close-modal="modalDeleteGoal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="deleteGoalId">
+        <p class="text-secondary text-sm-body mb-3">
+          Are you sure you want to permanently delete the career goal for <strong id="deleteGoalRoleTitle" class="text-primary"></strong> (Goal ID: #<span id="deleteGoalIdDisplay" class="font-mono"></span>)?
+        </p>
+        <p class="form-hint text-danger">
+          This operation deletes the goal record from PostgreSQL table <code>career_goals</code>. Any associated gap analysis snapshots and roadmap plans will be removed or unlinked.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-close-modal="modalDeleteGoal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmDeleteGoal">Delete Career Goal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 7: INSPECT CAREER GOAL & SKILL MATCH (READ) -->
+  <div id="modalInspectGoal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-dialog-wide">
+      <div class="modal-header">
+        <h3 class="modal-title">Career Goal &amp; Skill Match Inspection</h3>
+        <button type="button" class="btn-close" data-close-modal="modalInspectGoal">&times;</button>
+      </div>
+      <div class="modal-body" id="inspectGoalContent">
+        <div class="loading-cell">Loading goal inspection details...</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-close-modal="modalInspectGoal">Done</button>
       </div>
     </div>
   </div>

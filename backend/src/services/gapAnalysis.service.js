@@ -23,6 +23,38 @@ export class GapAnalysisService {
     return res.rows[0];
   }
 
+  async getGoalById(goalId) {
+    const id = parseInt(goalId, 10);
+    const res = await query(GAP_QUERIES.GET_GOAL_BY_ID, [id]);
+    if (res.rows.length === 0) {
+      throw new NotFoundError(`Career goal with goal_id = ${id} was not found`);
+    }
+    return res.rows[0];
+  }
+
+  async updateGoal(goalId, data) {
+    const id = parseInt(goalId, 10);
+    await this.getGoalById(id);
+
+    const targetDate = data.target_date !== undefined ? data.target_date : (data.target_completion_date !== undefined ? data.target_completion_date : null);
+    const params = [
+      id,
+      data.priority !== undefined ? data.priority : null,
+      targetDate,
+      data.status !== undefined ? data.status : null,
+      data.notes !== undefined ? data.notes : null,
+    ];
+    const res = await query(GAP_QUERIES.UPDATE_GOAL, params);
+    return res.rows[0];
+  }
+
+  async deleteGoal(goalId) {
+    const id = parseInt(goalId, 10);
+    const existing = await this.getGoalById(id);
+    const res = await query(GAP_QUERIES.DELETE_GOAL, [id]);
+    return res.rows[0] || existing;
+  }
+
   async getSkillMatch(goalId) {
     const id = parseInt(goalId, 10);
     const goalRes = await query(GAP_QUERIES.GET_GOAL_BY_ID, [id]);

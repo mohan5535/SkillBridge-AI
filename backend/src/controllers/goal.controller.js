@@ -28,6 +28,44 @@ export const goalController = {
     }
   },
 
+  async getGoalById(req, res, next) {
+    try {
+      const goal = await gapAnalysisService.getGoalById(req.params.goalId);
+      return res.status(HTTP_STATUS.OK).json({
+        status: 'success',
+        data: goal,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async updateGoal(req, res, next) {
+    try {
+      const goal = await gapAnalysisService.updateGoal(req.params.goalId, req.body);
+      return res.status(HTTP_STATUS.OK).json({
+        status: 'success',
+        data: goal,
+        message: 'Career goal updated successfully',
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async deleteGoal(req, res, next) {
+    try {
+      const deleted = await gapAnalysisService.deleteGoal(req.params.goalId);
+      return res.status(HTTP_STATUS.OK).json({
+        status: 'success',
+        data: deleted,
+        message: 'Career goal deleted successfully',
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
   async getSkillMatch(req, res, next) {
     try {
       const match = await gapAnalysisService.getSkillMatch(req.params.goalId);
